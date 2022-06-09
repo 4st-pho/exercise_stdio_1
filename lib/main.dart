@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stdio_week_5/pages/hidden_drawer.dart';
 import 'package:stdio_week_5/provider/my_theme.dart';
-import 'package:stdio_week_5/provider/stories.dart';
 
 void main() {
   runApp(const MyApp());

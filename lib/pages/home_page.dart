@@ -90,10 +90,12 @@ class _HomePageState extends State<HomePage> {
                 .push(MaterialPageRoute(
                     builder: (context) => const AddStoryPage()))
                 .then((msg) {
-              if (msg == 'ok') {
-                showSnackBar(context: context, content: 'success');
-              } else {
-                showSnackBar(context: context, content: 'Error: $msg');
+              if (msg != null) {
+                if (msg == 'ok') {
+                  showSnackBar(context: context, content: 'success');
+                } else {
+                  showSnackBar(context: context, content: 'Error: $msg');
+                }
               }
             });
           },

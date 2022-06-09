@@ -40,8 +40,7 @@ class _StoryDetailPageState extends State<StoryDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    final stories = context.read<Stories>();
-    final storyC = widget.story;
+    // final stories = context.read<Stories>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -65,19 +64,19 @@ class _StoryDetailPageState extends State<StoryDetailPage> {
               children: [
                 isEdit
                     ? SilderEdit(
-                        init: storyC.feeling,
+                        init: widget.story.feeling,
                       )
                     : Column(
                         children: [
                           Image.asset(
-                            getStatus(storyC.feeling)[0],
+                            getStatus(widget.story.feeling)[0],
                             height: 60,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            getStatus(storyC.feeling)[1],
+                            getStatus(widget.story.feeling)[1],
                             style: MyFont.secondaryBlackBig,
                           ),
                           const SizedBox(
@@ -125,12 +124,12 @@ class _StoryDetailPageState extends State<StoryDetailPage> {
                 setState(() {
                   isEdit = false;
                 });
-                String msg = await stories.updateStory(Story(
-                    id: storyC.id,
-                    title: titleController.text,
-                    content: contentController.text,
-                    feeling: storyProperty['feeling'],
-                    time: storyC.time));
+                // String msg = await stories.updateStory(Story(
+                //     id: widget.story.id,
+                //     title: titleController.text,
+                //     content: contentController.text,
+                //     feeling: storyProperty['feeling'],
+                //     time: widget.story.time));
               },
               icon: Icons.done,
               color: Colors.greenAccent,

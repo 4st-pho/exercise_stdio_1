@@ -36,6 +36,7 @@ class Story with ChangeNotifier {
         "feeling": feeling,
         "time": time.toIso8601String(),
       };
+
   Future<String> updateStory(
       {required String title,
       required String content,

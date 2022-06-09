@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:stdio_week_5/pages/widgets/story_builder.dart';
 import 'package:stdio_week_5/provider/stories.dart';
 
-
 class StoryPage extends StatelessWidget {
   const StoryPage({Key? key}) : super(key: key);
 

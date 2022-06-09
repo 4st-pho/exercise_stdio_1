@@ -9,7 +9,7 @@ class QuotePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PageView(
       scrollDirection: Axis.vertical,
-      children: [...quoteData.map((e) => QuoteItem(quote: e)).toList()],
+      children: quoteData.map((e) => QuoteItem(quote: e)).toList(),
     );
   }
 }

@@ -29,20 +29,20 @@ final List<Story> dummydata = [
 ];
 
 final List<Quote> quoteData = [
-  const Quote(
+  Quote(
     quote:
         "A person’s name is to him or her the sweetest and most important sound in any language.",
     athor: 'Dale Carnegie',
     imgPath:
         'https://zicxa.com/media/magefan_blog/dale-carnegie-9238769-1-402.jpg',
   ),
-  const Quote(
+  Quote(
     quote: 'Failure is the condiment that gives success its flavor.',
     athor: 'Truman',
     imgPath:
         'https://cdnmedia.baotintuc.vn/Upload/ESSoZh9IeVhxwO8Bh87Q/files/2020/11/3/truman4.jpg',
   ),
-  const Quote(
+  Quote(
     quote: 'Genius is one percent inspiration and 99 percent perspiration',
     athor: 'Thomas Edison',
     imgPath:

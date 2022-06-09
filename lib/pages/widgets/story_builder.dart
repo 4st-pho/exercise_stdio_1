@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:stdio_week_5/model/story.dart';
 import 'package:stdio_week_5/provider/stories.dart';
 import 'package:stdio_week_5/widgets/story_item.dart';
 
