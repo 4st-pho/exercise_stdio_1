@@ -26,7 +26,6 @@ class _HotelDetailPageState extends State<HotelDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('**' * 10);
     final size = MediaQuery.of(context).size;
     final reviews = widget.hotel.comments;
     _hotelCardBloc.init(widget.hotel.id);
@@ -45,7 +44,9 @@ class _HotelDetailPageState extends State<HotelDetailPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MapPage()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      MapPage(location: widget.hotel.location)));
             },
             icon: Image.asset('assets/icons/export.png', height: 24),
           ),

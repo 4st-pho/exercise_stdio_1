@@ -6,8 +6,9 @@ import 'package:stdio_week_6/models/location.dart';
 class MapPage extends StatelessWidget {
   const MapPage({
     Key? key,
+    required this.location,
   }) : super(key: key);
-  // final Location location;
+  final Location location;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,10 +25,10 @@ class MapPage extends StatelessWidget {
       body: GoogleMap(
           initialCameraPosition: CameraPosition(
               target: LatLng(
-                22,
-                88,
+                location.x,
+                location.y,
               ),
-              zoom: 20)),
+              zoom: 16)),
     );
   }
 }
