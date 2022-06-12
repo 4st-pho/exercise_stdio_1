@@ -5,15 +5,16 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Stack(
       children: [
         Image.asset(
           'assets/images/bg_logo_1.png',
-          height: 200,
+          height: 127,
         ),
         Positioned(
+          left: size.width / 2 - 150,
           bottom: 0,
-          left: 43,
           child: Image.asset(
             'assets/images/logo_1.png',
             height: 100,
