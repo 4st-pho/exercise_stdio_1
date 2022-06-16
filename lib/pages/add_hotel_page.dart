@@ -76,6 +76,8 @@ class _AddHotelPageState extends State<AddHotelPage> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Image.asset('assets/icons/arow_black.png', height: 24,),onPressed: (){Navigator.of(context).pop();}),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,

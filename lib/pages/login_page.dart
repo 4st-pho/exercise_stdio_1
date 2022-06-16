@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:stdio_week_6/blocs/login_bloc.dart';
+import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/constants/my_decoration.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
+import 'package:stdio_week_6/pages/my_bottom_app_bar.dart';
 import 'package:stdio_week_6/widgets/custom_button.dart';
 import 'package:stdio_week_6/widgets/logo.dart';
 
@@ -14,7 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
-  bool isPasswordVisible = false;
+  final _loginBloc = LoginBloc();
   @override
   void initState() {
     super.initState();
@@ -27,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    _loginBloc.dispose();
   }
 
   @override
@@ -66,38 +70,55 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  height: 53,
-                  child: TextField(
-                    controller: passwordController,
-                    keyboardType: TextInputType.emailAddress,
-                    obscureText: !isPasswordVisible,
-                    style: const TextStyle(fontSize: 14),
-                    decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        icon: isPasswordVisible
-                            ? const Icon(Icons.visibility)
-                            : const Icon(Icons.visibility_off),
-                        onPressed: () {
-                          setState(() {
-                            isPasswordVisible = !isPasswordVisible;
-                          });
-                        },
-                      ),
-                      border: MyDecoration.outlineInputBorder,
-                      hintText: 'Password',
-                      fillColor: Colors.transparent,
-                      filled: true,
-                      hintStyle: MyFont.greyLabel,
-                      enabledBorder: MyDecoration.outlineInputBorder,
-                      focusedBorder: MyDecoration.outlineInputBorder,
-                    ),
-                  ),
-                ),
+                StreamBuilder<bool>(
+                    stream: _loginBloc.stream,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      final isPasswordVisible = snapshot.data!;
+                      return SizedBox(
+                        height: 53,
+                        child: TextField(
+                          controller: passwordController,
+                          keyboardType: TextInputType.emailAddress,
+                          obscureText: !isPasswordVisible,
+                          style: const TextStyle(fontSize: 14),
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: isPasswordVisible
+                                  ? const Icon(
+                                      Icons.visibility,
+                                      color: MyColor.grey,
+                                    )
+                                  : const Icon(
+                                      Icons.visibility_off,
+                                      color: MyColor.grey,
+                                    ),
+                              onPressed: () {
+                                _loginBloc.toggleShow();
+                              },
+                            ),
+                            border: MyDecoration.outlineInputBorder,
+                            hintText: 'Password',
+                            fillColor: Colors.transparent,
+                            filled: true,
+                            hintStyle: MyFont.greyLabel,
+                            enabledBorder: MyDecoration.outlineInputBorder,
+                            focusedBorder: MyDecoration.outlineInputBorder,
+                          ),
+                        ),
+                      );
+                    }),
                 const SizedBox(height: 40),
                 CustomButton(
-                  text: 'login',
-                  onPress: () {},
+                  text: 'Login',
+                  onPress: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => const MyBottomAppBar()));
+                  },
                 )
               ],
             ),

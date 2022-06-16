@@ -23,7 +23,6 @@ class _HotelCardState extends State<HotelCard> {
 
   @override
   Widget build(BuildContext context) {
-    _cardBloc.init(widget.hotel.id);
     return InkWell(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -55,8 +54,8 @@ class _HotelCardState extends State<HotelCard> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                StreamBuilder<Hotel>(
-                    stream: _cardBloc.cardStream,
+                StreamBuilder<List<String>>(
+                    stream: _cardBloc.stream,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return const Center(
@@ -69,7 +68,7 @@ class _HotelCardState extends State<HotelCard> {
                         right: 12,
                         child: InkWell(
                           onTap: () {
-                            _cardBloc.toggleSave();
+                            _cardBloc.toggleSave(widget.hotel.id);
                           },
                           child: Container(
                             width: 30,
@@ -79,7 +78,7 @@ class _HotelCardState extends State<HotelCard> {
                                 color: Colors.white.withOpacity(0.2)),
                             child: Padding(
                               padding: const EdgeInsets.all(7),
-                              child: data.isSave
+                              child: data.contains(widget.hotel.id)
                                   ? Image.asset(
                                       'assets/icons/save_active.png',
                                       height: 16,

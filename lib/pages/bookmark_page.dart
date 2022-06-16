@@ -20,9 +20,8 @@ class _BookmarkPageState extends State<BookmarkPage> {
   }
   @override
   Widget build(BuildContext context) {
-    _bookmarkBloc.init();
     return StreamBuilder<List<Hotel>>(
-        stream: _bookmarkBloc.listHotelStream,
+        stream: _bookmarkBloc.stream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: CircularProgressIndicator());

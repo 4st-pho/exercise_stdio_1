@@ -4,7 +4,7 @@ import 'package:stdio_week_6/models/hotel.dart';
 
 class DiscoverBloc {
   final _controller = StreamController<List<Hotel>>();
-  Stream<List<Hotel>> get discoverStream => _controller.stream;
+  Stream<List<Hotel>> get stream => _controller.stream;
 
   void init() {
     _controller.sink.add([]);
@@ -16,6 +16,10 @@ class DiscoverBloc {
         .where((hotel) => hotel.name.toLowerCase().contains(content))
         .toList();
     _controller.sink.add(newList);
+  }
+
+  DiscoverBloc() {
+    init();
   }
 
   void dispose() {

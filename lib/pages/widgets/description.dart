@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 
@@ -18,7 +19,7 @@ class _DescriptionState extends State<Description> {
     int textLength = widget.text.length;
     if (textLength > 150) {
       firstHalf = widget.text.substring(0, 150);
-      secondHalf = widget.text.substring(150, textLength - 1);
+      secondHalf = widget.text.substring(150, textLength);
     } else {
       firstHalf = widget.text;
       secondHalf = '';
@@ -30,7 +31,7 @@ class _DescriptionState extends State<Description> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Description', style: MyFont.blueHeading),
+        const Text('Description', style: MyFont.blueTitle),
         const SizedBox(
           height: 8,
         ),
@@ -41,22 +42,21 @@ class _DescriptionState extends State<Description> {
                   ? Text(widget.text, style: MyFont.blackText)
                   : isShow
                       ? Text(widget.text, style: MyFont.blackText)
-                      : Wrap(
-                          children: [
-                            Text('$firstHalf... ', style: MyFont.blackText),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  isShow = !isShow;
-                                });
-                              },
-                              child: Text(
-                                'read more',
-                                style: MyFont.blackText.copyWith(
-                                    decoration: TextDecoration.underline),
-                              ),
-                            )
-                          ],
+                      : RichText(
+                          text: TextSpan(style: MyFont.blackText, children: [
+                            TextSpan(text: '$firstHalf... ', children: [
+                              TextSpan(
+                                  text: 'read more',
+                                  style: const TextStyle(
+                                      decoration: TextDecoration.underline),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      setState(() {
+                                        isShow = !isShow;
+                                      });
+                                    })
+                            ]),
+                          ]),
                         ),
             )
           ],

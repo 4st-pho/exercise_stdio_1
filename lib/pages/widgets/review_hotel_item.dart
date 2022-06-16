@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/get_rating.dart';
-import 'package:stdio_week_6/models/comment.dart';
+import 'package:stdio_week_6/models/review.dart';
+import 'package:stdio_week_6/models/user.dart';
 
-class Review extends StatelessWidget {
-  const Review({Key? key, required this.comment}) : super(key: key);
-  final Comment comment;
+class ReviewHotelItem extends StatelessWidget {
+  const ReviewHotelItem({Key? key, required this.review}) : super(key: key);
+  final Review review;
   @override
   Widget build(BuildContext context) {
-    final user = comment.user;
+    final user = getUser(uid: review.uid) ;
     return Column(
       children: [
         const Divider(thickness: 1, height: 32),
@@ -26,15 +27,15 @@ class Review extends StatelessWidget {
                   style: MyFont.blackTextSmall,
                 ),
                 Row(
-                  children: getRating(comment.rating, height: 10),
+                  children: getRating(review.rating, height: 10),
                 )
               ],
             ),
           ),
           const Spacer(),
-          comment.like > 0
+          review.like > 0
               ? Text(
-                  '${comment.like}',
+                  '${review.like}',
                   style: MyFont.greyLabel,
                 )
               : const SizedBox(),
@@ -48,7 +49,7 @@ class Review extends StatelessWidget {
         Row(children: [
           Expanded(
               child: Text(
-            comment.content,
+            review.content,
             style: MyFont.blackTextSmall,
           ))
         ])

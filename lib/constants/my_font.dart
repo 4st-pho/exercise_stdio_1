@@ -16,5 +16,7 @@ class MyFont {
   static const blackTitle = TextStyle(
       fontSize: 14,  color: MyColor.black, fontWeight: FontWeight.bold);
   static const blueHeading =
+      TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: MyColor.blue);
+  static const blueTitle =
       TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: MyColor.blue);
 }

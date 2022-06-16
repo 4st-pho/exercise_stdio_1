@@ -28,7 +28,6 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
   @override
   Widget build(BuildContext context) {
-    _discoverBloc.init();
     return Padding(
       padding: const EdgeInsets.all(32),
       child: Column(
@@ -52,39 +51,37 @@ class _DiscoverPageState extends State<DiscoverPage> {
           ),
           Expanded(
             child: StreamBuilder<List<Hotel>>(
-              stream: _discoverBloc.discoverStream,
-              builder: (context, snapshot) {
-                if(!snapshot.hasData){
-                  return const SizedBox();
-                }
-                final data = snapshot.data!;
-                return ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final hotel = data[index];
-                    return Column(
-                      children: [
-                        ListTile(
-                          leading: Image.network(
-                            hotel.imagePath,
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
+                stream: _discoverBloc.stream,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const SizedBox();
+                  }
+                  final data = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final hotel = data[index];
+                      return Column(
+                        children: [
+                          ListTile(
+                            leading: Image.network(
+                              hotel.imagePath,
+                              width: 60,
+                              height: 60,
+                              fit: BoxFit.cover,
+                            ),
+                            title: Text(hotel.name),
+                            subtitle: Text(hotel.address),
                           ),
-                          title: Text(hotel.name),
-                          subtitle: Text(hotel.address),
-                        ),
-                        const Divider(
-                          indent: 16,
-                          thickness: 2,
-                          height: 20,
-                        )
-                      ],
-                    );
-                  },
-                );
-              }
-            ),
+                          const Divider(
+                            thickness: 2,
+                            height: 20,
+                          )
+                        ],
+                      );
+                    },
+                  );
+                }),
           )
         ],
       ),
