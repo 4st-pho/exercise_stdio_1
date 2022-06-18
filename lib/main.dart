@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
+import 'package:stdio_week_6/firebase_options.dart';
 import 'package:stdio_week_6/pages/login_page.dart';
 import 'package:stdio_week_6/pages/main_page.dart';
 import 'package:stdio_week_6/services/firebase_auth/firebase_auth_methods.dart';
@@ -18,7 +19,9 @@ void main() async {
         statusBarIconBrightness: Brightness.dark),
   );
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
