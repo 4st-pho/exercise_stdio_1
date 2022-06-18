@@ -4,9 +4,11 @@ import 'package:stdio_week_6/constants/my_color.dart';
 class CustomButton extends StatelessWidget {
   final bool infiniti;
   final String text;
-  final VoidCallback onPress;
+  final Color color;
+  final VoidCallback? onPress;
   const CustomButton(
       {this.infiniti = true,
+      this.color = MyColor.blue,
       required this.text,
       Key? key,
       required this.onPress})
@@ -16,7 +18,7 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            primary: MyColor.blue,
+            primary: color,
             minimumSize: infiniti
                 ? const Size(double.infinity, 53)
                 : const Size(233, 53),

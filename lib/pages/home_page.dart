@@ -1,49 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:stdio_week_6/blocs/home_bloc.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/models/hotel.dart';
 import 'package:stdio_week_6/pages/widgets/home_bar.dart';
 import 'package:stdio_week_6/pages/widgets/hotel_card.dart';
+import 'package:stdio_week_6/services/cloud_firestore/hotel_firestore.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  final _homeBloc = Homebloc();
-  @override
-  void dispose() {
-    _homeBloc.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          return [
-            const SliverAppBar(
-              elevation: 0,
-              title: HomeBar(),
-              toolbarHeight: 80,
-              floating: true,
-              backgroundColor: MyColor.background,
-            )
-          ];
-        },
-        body:StreamBuilder<List<Hotel>>(
-        stream: _homeBloc.stream,
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        return [
+          SliverAppBar(
+            elevation: 0,
+            title: HomeBar(context: context),
+            toolbarHeight: 80,
+            floating: true,
+            backgroundColor: MyColor.background,
+          )
+        ];
+      },
+      body: StreamBuilder<List<Hotel>>(
+        stream: HotelFirestore().getHotels,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const SizedBox();
+            return const Center(child: CircularProgressIndicator());
           }
-          List<Hotel> hotels = snapshot.data!;
+          List<Hotel> listHotel = snapshot.data!;
+          hotels = listHotel;
           return ListView.builder(
             padding: const EdgeInsets.all(16),
-            itemCount: hotels.length,
+            itemCount: listHotel.length,
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 16),
@@ -52,6 +41,7 @@ class _HomePageState extends State<HomePage> {
             },
           );
         },
-      ),);
+      ),
+    );
   }
 }

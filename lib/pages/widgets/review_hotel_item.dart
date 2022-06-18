@@ -1,59 +1,80 @@
 import 'package:flutter/material.dart';
+import 'package:stdio_week_6/blocs/get_user_bloc.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/get_rating.dart';
 import 'package:stdio_week_6/models/review.dart';
 import 'package:stdio_week_6/models/user.dart';
+import 'package:stdio_week_6/widgets/custom_loading.dart';
 
-class ReviewHotelItem extends StatelessWidget {
+class ReviewHotelItem extends StatefulWidget {
   const ReviewHotelItem({Key? key, required this.review}) : super(key: key);
   final Review review;
   @override
+  State<ReviewHotelItem> createState() => _ReviewHotelItemState();
+}
+
+class _ReviewHotelItemState extends State<ReviewHotelItem> {
+  final _getUserBloc = GetUserBloc();
+  @override
   Widget build(BuildContext context) {
-    final user = getUser(uid: review.uid) ;
-    return Column(
-      children: [
-        const Divider(thickness: 1, height: 32),
-        Row(children: [
-          ClipOval(
-          child: Image.network(user.avatar, width: 40, height: 40, fit: BoxFit.cover,),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  user.name,
-                  style: MyFont.blackTextSmall,
+    _getUserBloc.init(widget.review.uid);
+    return StreamBuilder<User>(
+        stream: _getUserBloc.stream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const SizedBox();
+          }
+          final user = snapshot.data!;
+          return Column(
+            children: [
+              const Divider(thickness: 1, height: 32),
+              Row(children: [
+                ClipOval(
+                  child: Image.network(
+                    user.avatar,
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                Row(
-                  children: getRating(review.rating, height: 10),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user.name,
+                        style: MyFont.blackTextSmall,
+                      ),
+                      Row(
+                        children: getRating(widget.review.rating, height: 10),
+                      )
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                widget.review.like > 0
+                    ? Text(
+                        '${widget.review.like}',
+                        style: MyFont.greyLabel,
+                      )
+                    : const SizedBox(),
+                const SizedBox(width: 8),
+                Image.asset(
+                  'assets/icons/like.png',
+                  height: 20,
                 )
-              ],
-            ),
-          ),
-          const Spacer(),
-          review.like > 0
-              ? Text(
-                  '${review.like}',
-                  style: MyFont.greyLabel,
-                )
-              : const SizedBox(),
-          const SizedBox(width: 8),
-          Image.asset(
-            'assets/icons/like.png',
-            height: 20,
-          )
-        ]),
-        const SizedBox(height: 16),
-        Row(children: [
-          Expanded(
-              child: Text(
-            review.content,
-            style: MyFont.blackTextSmall,
-          ))
-        ])
-      ],
-    );
+              ]),
+              const SizedBox(height: 16),
+              Row(children: [
+                Expanded(
+                    child: Text(
+                  widget.review.content,
+                  style: MyFont.blackTextSmall,
+                ))
+              ])
+            ],
+          );
+        });
   }
 }

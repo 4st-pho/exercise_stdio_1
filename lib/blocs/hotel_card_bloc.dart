@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:stdio_week_6/models/user.dart';
+import 'package:stdio_week_6/services/cloud_firestore/user_firestore.dart';
 
 class HotelCardBloc {
   final _controller = StreamController<List<String>>();
@@ -18,6 +19,7 @@ class HotelCardBloc {
       currenUser.follow.add(id);
     }
     _controller.sink.add(currenUser.follow);
+    UserFirestore().updateFollow(follow: currenUser.follow);
   }
 
   HotelCardBloc() {

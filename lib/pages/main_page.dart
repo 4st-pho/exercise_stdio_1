@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/bottom_appbar_bloc.dart';
+import 'package:stdio_week_6/models/user.dart';
 import 'package:stdio_week_6/pages/bookmark_page.dart';
 import 'package:stdio_week_6/pages/discover_page.dart';
 import 'package:stdio_week_6/pages/home_page.dart';
 import 'package:stdio_week_6/pages/profile_page.dart';
 
-class MyBottomAppBar extends StatefulWidget {
-  const MyBottomAppBar({Key? key}) : super(key: key);
+class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
 
   @override
-  State<MyBottomAppBar> createState() => _MyBottomAppBarState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _MyBottomAppBarState extends State<MyBottomAppBar> {
+class _MainPageState extends State<MainPage> {
   final _bottomBarBloc = MyBottomBarBloc();
   final List<Widget> _pages = const [
     HomePage(),
@@ -49,6 +50,12 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    resetUser();
   }
 
   @override

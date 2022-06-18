@@ -13,6 +13,12 @@ class BookmarkPage extends StatefulWidget {
 class _BookmarkPageState extends State<BookmarkPage> {
 
   final _bookmarkBloc = BookmarkBloc();
+
+@override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _bookmarkBloc.init();
+  }
   @override
   void dispose() {
     _bookmarkBloc.dispose();

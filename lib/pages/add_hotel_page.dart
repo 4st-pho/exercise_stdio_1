@@ -1,11 +1,14 @@
 import 'dart:io';
 
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:stdio_week_6/blocs/add_hotel_bloc.dart';
-import 'package:stdio_week_6/constants/my_color.dart';
-import 'package:stdio_week_6/constants/my_decoration.dart';
+import 'package:stdio_week_6/blocs/change_image_bloc.dart';
+import 'package:stdio_week_6/blocs/loading_bloc.dart';
+import 'package:stdio_week_6/constants/collection_path.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
+import 'package:stdio_week_6/helper/build_text_field.dart';
+import 'package:stdio_week_6/pages/widgets/dotted_image.dart';
+import 'package:stdio_week_6/pages/widgets/image_border.dart';
+import 'package:stdio_week_6/services/cloud_firestore/hotel_firestore.dart';
 import 'package:stdio_week_6/widgets/custom_button.dart';
 import 'package:stdio_week_6/widgets/custom_outline_button.dart';
 
@@ -20,7 +23,9 @@ class _AddHotelPageState extends State<AddHotelPage> {
   late final TextEditingController nameController;
   late final TextEditingController addressController;
   late final TextEditingController descriptionController;
-  final _addHotelBloc = AddHotelBloc();
+  File? file;
+  final _addHotelBloc = ChangeImageBloc();
+  final _loadingBloc = LoadingBloc();
 
   @override
   void initState() {
@@ -37,38 +42,7 @@ class _AddHotelPageState extends State<AddHotelPage> {
     addressController.dispose();
     descriptionController.dispose();
     _addHotelBloc.dispose();
-  }
-
-  Widget buildTextFeild(
-      {required TextEditingController controller,
-      String subtitle = '',
-      required String title,
-      required TextInputType type}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(title, style: MyFont.blackTitle),
-        const SizedBox(height: 10),
-        TextField(
-          minLines: 1,
-          maxLines: type == TextInputType.multiline ? 10 : 1,
-          controller: controller,
-          keyboardType: type,
-          decoration: InputDecoration(
-            border: MyDecoration.outlineInputBorder,
-            hintText: 'input for $title',
-            fillColor: Colors.transparent,
-            filled: true,
-            hintStyle: MyFont.greyLabel,
-            enabledBorder: MyDecoration.outlineInputBorder,
-            focusedBorder: MyDecoration.outlineInputBorder,
-          ),
-        ),
-        subtitle == '' ? const SizedBox(height: 0) : const SizedBox(height: 8),
-        Text(subtitle, style: MyFont.greyLabel),
-        const SizedBox(height: 16),
-      ],
-    );
+    _loadingBloc.dispose();
   }
 
   @override
@@ -77,7 +51,13 @@ class _AddHotelPageState extends State<AddHotelPage> {
       extendBody: true,
       appBar: AppBar(
         leading: IconButton(
-          icon: Image.asset('assets/icons/arow_black.png', height: 24,),onPressed: (){Navigator.of(context).pop();}),
+            icon: Image.asset(
+              'assets/icons/arow_black.png',
+              height: 24,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -110,56 +90,22 @@ class _AddHotelPageState extends State<AddHotelPage> {
                   stream: _addHotelBloc.stream,
                   initialData: null,
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    final image = snapshot.data;
-                    return image == null
-                        ? DottedBorder(
-                            color: MyColor.grey,
-                            strokeWidth: 1,
-                            dashPattern: const [8, 4],
-                            borderType: BorderType.RRect,
-                            radius: const Radius.circular(8),
-                            child: InkWell(
-                              onTap: () async {
-                                await _addHotelBloc.getImage();
-                              },
-                              child: SizedBox(
-                                width: 139,
-                                height: 139,
-                                child: Center(
-                                    child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Image.asset('assets/icons/gallery.png',
-                                        height: 24),
-                                    const SizedBox(height: 5),
-                                    Text(
-                                      'Add image',
-                                      style: MyFont.greySubtitle.copyWith(
-                                          decoration: TextDecoration.underline),
-                                    )
-                                  ],
-                                )),
-                              ),
-                            ),
-                          )
+                    final imageFile = snapshot.data;
+                    file = imageFile;
+                    return imageFile == null
+                        ? DottedImage(onPressed: () async {
+                            await _addHotelBloc.getImage();
+                          })
                         : InkWell(
                             onTap: () async {
                               await _addHotelBloc.getImage();
                             },
-                            child: ClipRRect(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(16)),
-                              child: Image.file(
-                                image,
-                                height: 162,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          );
+                            child: ImageBorder(imageFile: imageFile));
                   },
                 ),
-                const SizedBox(height: 20,)
+                const SizedBox(
+                  height: 20,
+                )
               ],
             ),
           )),
@@ -169,11 +115,33 @@ class _AddHotelPageState extends State<AddHotelPage> {
               children: [
                 CustomOutlineButton(text: 'Cancel', onPress: () {}),
                 const Spacer(),
-                CustomButton(
-                  text: 'Done',
-                  onPress: () {},
-                  infiniti: false,
-                )
+                StreamBuilder<bool>(
+                    stream: _loadingBloc.stream,
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      final loading = snapshot.data!;
+                      return CustomButton(
+                        text: 'Done',
+                        onPress: loading
+                            ? null
+                            : () async {
+                                _loadingBloc.toggleState();
+                                await HotelFirestore().createHotel(
+                                    name: nameController.text,
+                                    address: addressController.text,
+                                    description: descriptionController.text,
+                                    file: file,
+                                    collectionImagePath:
+                                        CollectionPath.hotelImage);
+                                Navigator.of(context).pop("Success");
+                              },
+                        infiniti: false,
+                      );
+                    })
               ],
             ),
           )

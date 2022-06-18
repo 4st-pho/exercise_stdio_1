@@ -4,6 +4,8 @@ import 'package:stdio_week_6/blocs/map_bloc.dart';
 import 'package:stdio_week_6/constants/json/map_json.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/models/location.dart';
+import 'package:stdio_week_6/models/user.dart';
+import 'package:stdio_week_6/services/cloud_firestore/user_firestore.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({
@@ -18,6 +20,7 @@ class MapPage extends StatefulWidget {
 
 class _MapPageState extends State<MapPage> {
   final _mapBloc = MapBloc();
+  @override
 
   @override
   void dispose() {
@@ -39,19 +42,26 @@ class _MapPageState extends State<MapPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Image.asset('assets/icons/arow_black.png', height: 24,),
-          onPressed: (){Navigator.of(context).pop();}),
+            icon: Image.asset(
+              'assets/icons/arow_black.png',
+              height: 24,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
       ),
       body: StreamBuilder<Set<Marker>>(
           stream: _mapBloc.stream,
           builder: (context, snapshot) {
-            if(!snapshot.hasData){
-              return const Center(child: CircularProgressIndicator(),);
+            if (!snapshot.hasData) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
             final data = snapshot.data!;
             return GoogleMap(
                 markers: data,
-                onMapCreated: (controller){
+                onMapCreated: (controller) {
                   controller.setMapStyle(MapJson.json);
                 },
                 initialCameraPosition: CameraPosition(

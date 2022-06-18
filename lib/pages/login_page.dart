@@ -3,7 +3,7 @@ import 'package:stdio_week_6/blocs/login_bloc.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/constants/my_decoration.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
-import 'package:stdio_week_6/pages/my_bottom_app_bar.dart';
+import 'package:stdio_week_6/services/firebase_auth/firebase_auth_methods.dart';
 import 'package:stdio_week_6/widgets/custom_button.dart';
 import 'package:stdio_week_6/widgets/logo.dart';
 
@@ -116,8 +116,11 @@ class _LoginPageState extends State<LoginPage> {
                 CustomButton(
                   text: 'Login',
                   onPress: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const MyBottomAppBar()));
+                    FirebaseAuthMethods()
+                        .signinWithEmailAndPassword(
+                            email: emailController.text,
+                            password: passwordController.text,
+                            context: context);
                   },
                 )
               ],
