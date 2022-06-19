@@ -33,21 +33,22 @@ class HomeBar extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
-            width: 100,
-            child: IconButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(
-                          builder: (context) => const AddHotelPage()))
-                      .then((value) {
-                    if (value != null) {
-                      showSnackBar(context: context, content: value.toString());
-                    }
-                  });
-                },
-                icon: Image.asset('assets/icons/add.png', height: 24)),
-          ),
+          InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                        builder: (context) => const AddHotelPage()))
+                    .then((value) {
+                  if (value != null) {
+                    showSnackBar(context: context, content: value.toString());
+                  }
+                });
+              },
+              child: Image.asset(
+                'assets/icons/add.png',
+                height: 24,
+                width: 24,
+              )),
         ],
       ),
     );

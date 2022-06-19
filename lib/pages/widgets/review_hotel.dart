@@ -15,7 +15,7 @@ class ReviewHotel extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         return Padding(
           padding: const EdgeInsets.only(left: 16, right: 16),
-          child: ReviewHotelItem(review: reviews[index]),
+          child: ReviewHotelItem(review: reviews[index], index: index,),
         );
       },
     );

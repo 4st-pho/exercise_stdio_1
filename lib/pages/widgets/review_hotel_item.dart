@@ -4,11 +4,11 @@ import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/get_rating.dart';
 import 'package:stdio_week_6/models/review.dart';
 import 'package:stdio_week_6/models/user.dart';
-import 'package:stdio_week_6/widgets/custom_loading.dart';
 
 class ReviewHotelItem extends StatefulWidget {
-  const ReviewHotelItem({Key? key, required this.review}) : super(key: key);
+  const ReviewHotelItem({Key? key, required this.review, required this.index}) : super(key: key);
   final Review review;
+  final int index;
   @override
   State<ReviewHotelItem> createState() => _ReviewHotelItemState();
 }

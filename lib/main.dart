@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/firebase_options.dart';
 import 'package:stdio_week_6/pages/login_page.dart';
@@ -30,24 +28,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<FirebaseAuthMethods>(
-          create: (_) => FirebaseAuthMethods(),
-        ),
-        StreamProvider(
-          create: (context) => context.read<FirebaseAuthMethods>().authState,
-          initialData: null,
-        )
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-            primarySwatch: Colors.blue,
-            scaffoldBackgroundColor: MyColor.background),
-        home: const AuthWrapper(),
-      ),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          primarySwatch: Colors.blue,
+          scaffoldBackgroundColor: MyColor.background),
+      home: const AuthWrapper(),
     );
   }
 }
@@ -57,10 +44,16 @@ class AuthWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.watch<User?>();
-    if (user == null) {
-      return const LoginPage();
-    }
-    return const MainPage();
+    return StreamBuilder(
+      stream: FirebaseAuthMethods().authState,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        final data = snapshot.data;
+        if (data == null) {
+          return const LoginPage();
+        } else {
+          return const MainPage();
+        }
+      },
+    );
   }
 }

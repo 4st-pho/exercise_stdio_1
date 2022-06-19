@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/hotel_card_bloc.dart';
-import 'package:stdio_week_6/constants/my_font.dart';
-import 'package:stdio_week_6/helper/get_rating.dart';
 import 'package:stdio_week_6/models/hotel.dart';
 import 'package:stdio_week_6/pages/hotel_detail_page.dart';
+import 'package:stdio_week_6/pages/widgets/hote_card_image.dart';
+import 'package:stdio_week_6/pages/widgets/hotel_card_info.dart';
 
 class HotelCard extends StatefulWidget {
   const HotelCard({Key? key, required this.hotel}) : super(key: key);
@@ -43,85 +43,16 @@ class _HotelCardState extends State<HotelCard> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(16)),
-                  child: Image.network(
-                    widget.hotel.imagePath,
-                    height: 162,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                StreamBuilder<List<String>>(
-                    stream: _cardBloc.stream,
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      final data = snapshot.data!;
-                      return Positioned(
-                        top: 12,
-                        right: 12,
-                        child: InkWell(
-                          onTap: () {
-                            _cardBloc.toggleSave(widget.hotel.id);
-                          },
-                          child: Container(
-                            width: 30,
-                            height: 30,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white.withOpacity(0.2)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(7),
-                              child: data.contains(widget.hotel.id)
-                                  ? Image.asset(
-                                      'assets/icons/save_active.png',
-                                      height: 16,
-                                    )
-                                  : Image.asset(
-                                      'assets/icons/save.png',
-                                      height: 16,
-                                    ),
-                            ),
-                          ),
-                        ),
-                      );
-                    })
-              ],
-            ),
+            HotelcardImage(
+                imagePath: widget.hotel.imagePath, hotelId: widget.hotel.id),
             const SizedBox(
               height: 18,
             ),
-            Row(
-              children: [
-                Expanded(
-                    child: Text(widget.hotel.name, style: MyFont.blackHeading)),
-                const SizedBox(width: 10),
-                ...getRating(widget.hotel.rating),
-                const SizedBox(width: 5),
-                Text('${widget.hotel.rating}')
-              ],
+            HotelCardInfo(
+              hotelName: widget.hotel.name,
+              address: widget.hotel.address,
+              rating: widget.hotel.rating,
             ),
-            const SizedBox(
-              height: 4,
-            ),
-            Row(
-              children: [
-                Image.asset('assets/icons/location.png', height: 14),
-                const SizedBox(width: 10),
-                Expanded(
-                    child: Text(
-                  widget.hotel.address,
-                  style: MyFont.greySubtitle,
-                  overflow: TextOverflow.ellipsis,
-                ))
-              ],
-            )
           ],
         ),
       ),

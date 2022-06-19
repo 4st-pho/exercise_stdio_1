@@ -50,6 +50,7 @@ class HotelDetailPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 HotelInfo(
+                    reviewsQuantity: hotel.reviews.length,
                     name: hotel.name,
                     address: hotel.address,
                     rating: hotel.rating),

@@ -4,8 +4,6 @@ import 'package:stdio_week_6/blocs/map_bloc.dart';
 import 'package:stdio_week_6/constants/json/map_json.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/models/location.dart';
-import 'package:stdio_week_6/models/user.dart';
-import 'package:stdio_week_6/services/cloud_firestore/user_firestore.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({

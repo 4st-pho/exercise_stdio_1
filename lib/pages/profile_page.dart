@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/change_image_bloc.dart';
 import 'package:stdio_week_6/blocs/loading_bloc.dart';
+import 'package:stdio_week_6/constants/assest_image.dart';
 import 'package:stdio_week_6/helper/show_snackbar.dart';
 import 'package:stdio_week_6/models/user.dart';
 import 'package:stdio_week_6/services/cloud_firestore/user_firestore.dart';
@@ -63,8 +64,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           height: 200,
                           width: 200,
                           child: file == null
-                              ? Image.network(currenUser.avatar,
-                                  fit: BoxFit.cover)
+                              ? FadeInImage.assetNetwork(
+                                  placeholder: AssetsImage.fadeImageUser,
+                                  image: currenUser.avatar,
+                                  fit: BoxFit.cover,
+                                )
                               : Image.file(file, fit: BoxFit.cover),
                         ),
                       );

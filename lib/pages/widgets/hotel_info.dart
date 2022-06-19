@@ -7,11 +7,13 @@ class HotelInfo extends StatelessWidget {
       {Key? key,
       required this.name,
       required this.address,
-      required this.rating})
+      required this.rating,
+      required this.reviewsQuantity})
       : super(key: key);
   final String name;
   final String address;
   final double rating;
+  final int reviewsQuantity;
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +30,8 @@ class HotelInfo extends StatelessWidget {
             ...getRating(
               rating,
             ),
-
-        const SizedBox(width: 8),
-            Text('$rating')
+            const SizedBox(width: 8),
+            Text('$rating ($reviewsQuantity reviews)')
           ],
         ),
         const SizedBox(height: 8),

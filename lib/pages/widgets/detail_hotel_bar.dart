@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/hotel_card_bloc.dart';
+import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/models/hotel.dart';
 import 'package:stdio_week_6/pages/map_page.dart';
 
@@ -27,7 +28,7 @@ class _DetailHotelBarState extends State<DetailHotelBar> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          icon: Image.asset('assets/icons/back.png', height: 24),
+          icon: Image.asset(AssetsIcon.back, height: 24),
         ),
         const Spacer(),
         IconButton(
@@ -36,7 +37,7 @@ class _DetailHotelBarState extends State<DetailHotelBar> {
                 builder: (context) =>
                     MapPage(location: widget.hotel.location)));
           },
-          icon: Image.asset('assets/icons/export.png', height: 24),
+          icon: Image.asset(AssetsIcon.export, height: 24),
         ),
         IconButton(
           onPressed: () {
@@ -50,8 +51,8 @@ class _DetailHotelBarState extends State<DetailHotelBar> {
                 }
                 final data = snapshot.data!;
                 return data.contains(widget.hotel.id)
-                    ? Image.asset('assets/icons/save_active.png', height: 24)
-                    : Image.asset('assets/icons/save.png', height: 24);
+                    ? Image.asset(AssetsIcon.saveActive, height: 24)
+                    : Image.asset(AssetsIcon.save, height: 24);
               }),
         ),
       ],
