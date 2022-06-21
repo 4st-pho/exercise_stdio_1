@@ -14,6 +14,29 @@ class DetailHotelBar extends StatefulWidget {
 
 class _DetailHotelBarState extends State<DetailHotelBar> {
   final _hotelCardBloc = HotelCardBloc();
+  Widget buidImageButton(
+      {required VoidCallback onTap, required String assetsIcon}) {
+    return Container(
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, 0.25),
+            spreadRadius: 4,
+            offset: Offset(0, 0), // changes position of shadow
+          ),
+        ],
+      ),
+      child: InkWell(
+        onTap: onTap,
+        child: Image.asset(
+          assetsIcon,
+          height: 24,
+        ),
+      ),
+    );
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -24,26 +47,27 @@ class _DetailHotelBarState extends State<DetailHotelBar> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        IconButton(
-          onPressed: () {
+        buidImageButton(
+          onTap: () {
             Navigator.of(context).pop();
           },
-          icon: Image.asset(AssetsIcon.back, height: 24),
+          assetsIcon: AssetsIcon.back,
         ),
         const Spacer(),
-        IconButton(
-          onPressed: () {
+        InkWell(
+          onTap: () {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     MapPage(location: widget.hotel.location)));
           },
-          icon: Image.asset(AssetsIcon.export, height: 24),
+          child: Image.asset(AssetsIcon.export, height: 24),
         ),
-        IconButton(
-          onPressed: () {
+        const SizedBox(width: 13),
+        InkWell(
+          onTap: () {
             _hotelCardBloc.toggleSave(widget.hotel.id);
           },
-          icon: StreamBuilder<List<String>>(
+          child: StreamBuilder<List<String>>(
               stream: _hotelCardBloc.stream,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/bottom_appbar_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/models/user.dart';
 import 'package:stdio_week_6/pages/bookmark_page.dart';
 import 'package:stdio_week_6/pages/discover_page.dart';
@@ -22,36 +23,27 @@ class _MainPageState extends State<MainPage> {
     BookmarkPage(),
     ProfilePage()
   ];
-  Widget bottomAppBarItem({
-    required String iconName,
-    required String iconNameActive,
-    required String lable,
-    required int pageIndex,
-    required int curentIndex,
-    Color color = Colors.grey,
-  }) {
-    return Expanded(
-      child: InkWell(
-        onTap: () {
-          _bottomBarBloc.selectPage(pageIndex);
-        },
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            pageIndex == curentIndex
-                ? Image.asset(iconNameActive, height: 24)
-                : Image.asset(iconName, height: 24),
-            const SizedBox(height: 5),
-            Text(
-              lable,
-              style: TextStyle(
-                  color:
-                      pageIndex == curentIndex ? Colors.blue.shade800 : color),
+  BottomNavigationBarItem buildBottomNavigationBarItem(
+      {required int index,
+      required int curentIndex,
+      required String icon,
+      required String activeIcon,
+      required String label}) {
+    return index == curentIndex
+        ? BottomNavigationBarItem(
+            icon: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Image.asset(activeIcon, height: 24),
             ),
-          ],
-        )
-      ),
-    );
+            label: label,
+          )
+        : BottomNavigationBarItem(
+            icon: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Image.asset(icon, height: 24),
+            ),
+            label: label,
+          );
   }
 
   @override
@@ -76,40 +68,48 @@ class _MainPageState extends State<MainPage> {
               child: CircularProgressIndicator(),
             );
           }
-          final data = snapshot.data!;
+          final currentIndex = snapshot.data!;
           return Scaffold(
-              body: _pages[data],
-              bottomNavigationBar: BottomAppBar(
-                  elevation: 0,
-                  child: SizedBox(
-                    height: 60,
-                    child: Row(children: [
-                      bottomAppBarItem(
-                          iconName: AssetsIcon.home,
-                          iconNameActive: AssetsIcon.homeActive,
-                          pageIndex: 0,
-                          lable: 'Home',
-                          curentIndex: data),
-                      bottomAppBarItem(
-                          iconName: AssetsIcon.search,
-                          iconNameActive: AssetsIcon.searchActive,
-                          pageIndex: 1,
-                          lable: 'Discover',
-                          curentIndex: data),
-                      bottomAppBarItem(
-                          iconName: AssetsIcon.book,
-                          iconNameActive: AssetsIcon.bookActive,
-                          pageIndex: 2,
-                          lable: 'Bookmark',
-                          curentIndex: data),
-                      bottomAppBarItem(
-                          iconName: AssetsIcon.user,
-                          iconNameActive: AssetsIcon.homeActive,
-                          pageIndex: 3,
-                          lable: 'Profile',
-                          curentIndex: data),
-                    ]),
-                  )));
+              body: _pages[currentIndex],
+              bottomNavigationBar: BottomNavigationBar(
+                elevation: 0,
+                type: BottomNavigationBarType.fixed,
+                backgroundColor: MyColor.background,
+                currentIndex: currentIndex,
+                selectedItemColor: MyColor.blue,
+                unselectedItemColor: MyColor.grey,
+                selectedFontSize: 14,
+                unselectedFontSize: 14,
+                onTap: (pageIndex) {
+                  _bottomBarBloc.selectPage(pageIndex);
+                },
+                items: [
+                  buildBottomNavigationBarItem(
+                      index: 0,
+                      curentIndex: currentIndex,
+                      icon: AssetsIcon.home,
+                      activeIcon: AssetsIcon.homeActive,
+                      label: 'Home'),
+                  buildBottomNavigationBarItem(
+                      index: 1,
+                      curentIndex: currentIndex,
+                      icon: AssetsIcon.search,
+                      activeIcon: AssetsIcon.searchActive,
+                      label: 'Discover'),
+                  buildBottomNavigationBarItem(
+                      index: 2,
+                      curentIndex: currentIndex,
+                      icon: AssetsIcon.book,
+                      activeIcon: AssetsIcon.bookActive,
+                      label: 'Bookmark'),
+                  buildBottomNavigationBarItem(
+                      index: 3,
+                      curentIndex: currentIndex,
+                      icon: AssetsIcon.user,
+                      activeIcon: AssetsIcon.userActive,
+                      label: 'Profile'),
+                ],
+              ));
         });
   }
 }

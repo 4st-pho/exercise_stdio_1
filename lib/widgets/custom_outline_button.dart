@@ -4,18 +4,21 @@ import 'package:stdio_week_6/constants/my_color.dart';
 class CustomOutlineButton extends StatelessWidget {
   const CustomOutlineButton(
       {Key? key,
-      this.infiniti = false,
+      this.infiniti = true,
       required this.text,
-      required this.onPress})
+      required this.onPress,
+      this.minWidth = 111})
       : super(key: key);
   final bool infiniti;
+  final double minWidth;
   final String text;
   final VoidCallback onPress;
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-          minimumSize: const Size(111, 53),
+          minimumSize:
+              infiniti ? const Size(double.infinity, 53) : Size(minWidth, 53),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
@@ -23,8 +26,7 @@ class CustomOutlineButton extends StatelessWidget {
       onPressed: onPress,
       child: Text(
         text,
-        style:
-            const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+        style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
       ),
     );
   }

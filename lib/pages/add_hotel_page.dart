@@ -66,7 +66,7 @@ class _AddHotelPageState extends State<AddHotelPage> {
         title: const Text('Add hotel', style: MyFont.blackHeading),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Expanded(
               child: SingleChildScrollView(
@@ -124,10 +124,15 @@ class _AddHotelPageState extends State<AddHotelPage> {
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Row(
               children: [
-                CustomOutlineButton(text: 'Cancel', onPress: () {
-                  Navigator.of(context).pop();
-                }),
-                const Spacer(),
+                Flexible(
+                  flex: 4,
+                  child: CustomOutlineButton(
+                      text: 'Cancel',
+                      onPress: () {
+                        Navigator.of(context).pop();
+                      }),
+                ),
+                const Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
                 StreamBuilder<bool>(
                     stream: _loadingBloc.stream,
                     builder: (context, snapshot) {
@@ -137,52 +142,56 @@ class _AddHotelPageState extends State<AddHotelPage> {
                         );
                       }
                       final loading = snapshot.data!;
-                      return CustomButton(
-                        text: 'Done',
-                        onPress: loading
-                            ? null
-                            : () async {
-                                _loadingBloc.toggleState();
-                                if (!_formKey.currentState!.validate()) {
+                      return Flexible(
+                        flex: 8,
+                        child: CustomButton(
+                          text: 'Done',
+                          onPress: loading
+                              ? null
+                              : () async {
                                   _loadingBloc.toggleState();
-                                  return;
-                                }
-                                String error = '';
-                                if (nameController.text.length > 40) {
-                                  error = 'Name exceeds 40 characters. ';
-                                }
-                                if (addressController.text.length <11) {
-                                  error += 'Address must be more than 10 characters. ';
-                                }
-                                if (descriptionController.text.length < 11) {
-                                  error += 'Description must be more than 10 characters. ';
-                                }
-                                if (file == null) {
-                                  error += 'Image is required.';
-                                }
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                                if (error.isNotEmpty) {
-                                  showSnackBar(
+                                  if (!_formKey.currentState!.validate()) {
+                                    _loadingBloc.toggleState();
+                                    return;
+                                  }
+                                  String error = '';
+                                  if (nameController.text.length > 40) {
+                                    error = 'Name exceeds 40 characters. ';
+                                  }
+                                  if (addressController.text.length < 11) {
+                                    error +=
+                                        'Address must be more than 10 characters. ';
+                                  }
+                                  if (descriptionController.text.length < 11) {
+                                    error +=
+                                        'Description must be more than 10 characters. ';
+                                  }
+                                  if (file == null) {
+                                    error += 'Image is required.';
+                                  }
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                  if (error.isNotEmpty) {
+                                    showSnackBar(
                                       context: context,
                                       content: error,
                                       error: true,
-                                      );
-                                  _loadingBloc.toggleState();
-                                  return;
-                                }
+                                    );
+                                    _loadingBloc.toggleState();
+                                    return;
+                                  }
 
-                                await HotelFirestore().createHotel(
-                                    name: nameController.text,
-                                    address: addressController.text,
-                                    description: descriptionController.text,
-                                    file: file,
-                                    collectionImagePath:
-                                        CollectionPath.hotelImage);
-                                // ignore: use_build_context_synchronously
-                                Navigator.of(context).pop("Success");
-                              },
-                        infiniti: false,
+                                  await HotelFirestore().createHotel(
+                                      name: nameController.text,
+                                      address: addressController.text,
+                                      description: descriptionController.text,
+                                      file: file,
+                                      collectionImagePath:
+                                          CollectionPath.hotelImage);
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.of(context).pop("Success");
+                                },
+                        ),
                       );
                     })
               ],
