@@ -5,7 +5,7 @@ import 'package:stdio_week_6/blocs/change_image_bloc.dart';
 import 'package:stdio_week_6/blocs/loading_bloc.dart';
 import 'package:stdio_week_6/constants/collection_path.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
-import 'package:stdio_week_6/helper/build_text_field.dart';
+import 'package:stdio_week_6/helper/build_text_form_field.dart';
 import 'package:stdio_week_6/helper/show_snackbar.dart';
 import 'package:stdio_week_6/pages/widgets/dotted_image.dart';
 import 'package:stdio_week_6/pages/widgets/image_border.dart';

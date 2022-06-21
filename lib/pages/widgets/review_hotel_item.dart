@@ -4,9 +4,11 @@ import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/get_rating.dart';
 import 'package:stdio_week_6/models/review.dart';
 import 'package:stdio_week_6/models/user.dart';
+import 'package:stdio_week_6/widgets/hotel_review_shimmer.dart';
 
 class ReviewHotelItem extends StatefulWidget {
-  const ReviewHotelItem({Key? key, required this.review, required this.index}) : super(key: key);
+  const ReviewHotelItem({Key? key, required this.review, required this.index})
+      : super(key: key);
   final Review review;
   final int index;
   @override
@@ -22,7 +24,8 @@ class _ReviewHotelItemState extends State<ReviewHotelItem> {
         stream: _getUserBloc.stream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const SizedBox();
+            return
+                const HotelReviewShimmer();
           }
           final user = snapshot.data!;
           return Column(
