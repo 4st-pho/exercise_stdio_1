@@ -30,7 +30,7 @@ class User {
         "id": id,
         "name": name,
         "avatar": avatar,
-        "follow": follow.toList(),
+        "follow": follow,
       };
 }
 

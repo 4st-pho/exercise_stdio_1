@@ -31,7 +31,9 @@ class HotelInfo extends StatelessWidget {
               rating,
             ),
             const SizedBox(width: 8),
-            Text('$rating ($reviewsQuantity reviews)')
+            reviewsQuantity == 0
+                ? Text('$rating ($reviewsQuantity review)')
+                : Text('$rating ($reviewsQuantity reviews)')
           ],
         ),
         const SizedBox(height: 8),

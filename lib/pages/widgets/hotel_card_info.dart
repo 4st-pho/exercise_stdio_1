@@ -21,8 +21,8 @@ class HotelCardInfo extends StatelessWidget {
       children: [
         Row(
           children: [
-            Expanded(child: Text(hotelName, style: MyFont.blackHeading)),
-            const SizedBox(width: 10),
+            Expanded(child: Text(hotelName, style: MyFont.blackHeading, maxLines: 1)),
+            const SizedBox(width: 20),
             ...getRating(rating),
             const SizedBox(width: 5),
             Text('$rating')

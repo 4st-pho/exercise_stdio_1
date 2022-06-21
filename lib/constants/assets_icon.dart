@@ -14,4 +14,6 @@ class AssetsIcon {
   static const userActive = 'assets/icons/user_active.png';
   static const save = 'assets/icons/save.png';
   static const saveActive = 'assets/icons/save_active.png';
+  static const eye = 'assets/icons/eye.png';
+  static const eyeSlash = 'assets/icons/eye_slash.png';
 }
