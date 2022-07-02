@@ -1,13 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:stdio_week_6/blocs/home_page_bloc.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
+import 'package:stdio_week_6/constants/shimmer_loading.dart';
 import 'package:stdio_week_6/models/hotel.dart';
 import 'package:stdio_week_6/pages/widgets/home_bar.dart';
 import 'package:stdio_week_6/pages/widgets/hotel_card.dart';
-import 'package:stdio_week_6/services/cloud_firestore/hotel_firestore.dart';
 import 'package:stdio_week_6/widgets/hotel_card_shimmer.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final _homePageBloc = HomePageBloc();
+  ScrollController controller = ScrollController();
+  void _scrollListener() {
+    if (controller.offset >= controller.position.maxScrollExtent &&
+        !controller.position.outOfRange) {
+      _homePageBloc.fetchNextHotels();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _homePageBloc.dispose();
+    controller.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,37 +46,39 @@ class HomePage extends StatelessWidget {
             elevation: 0,
             title: HomeBar(context: context),
             toolbarHeight: 80,
-            floating: true,
             pinned: true,
             backgroundColor: MyColor.background,
           )
         ];
       },
       body: StreamBuilder<List<Hotel>>(
-        stream: HotelFirestore().getHotels,
+        stream: _homePageBloc.stream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return ListView(
-              padding: const EdgeInsets.all(16),
-              children: const [
-                HotelCardShimmer(),
-                HotelCardShimmer(),
-                HotelCardShimmer(),
-                HotelCardShimmer(),
-              ],
-            );
+            return ShimmerLoading.listHotelCard;
           }
           List<Hotel> listHotel = snapshot.data!;
-          hotels = listHotel;
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: listHotel.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: HotelCard(hotel: hotels[index]),
-              );
-            },
+          return RefreshIndicator(
+            onRefresh: () async => _homePageBloc.init(),
+            child: ListView.builder(
+              controller: controller,
+              padding: const EdgeInsets.all(16),
+              itemCount: listHotel.length + 1,
+              itemBuilder: (BuildContext context, int index) {
+                if (index == _homePageBloc.hotelList.length) {
+                  return _homePageBloc.hasMore
+                      ? const HotelCardShimmer()
+                      : const Text(
+                          'No more data to load!',
+                          textAlign: TextAlign.center,
+                        );
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: HotelCard(hotel: listHotel[index]),
+                );
+              },
+            ),
           );
         },
       ),

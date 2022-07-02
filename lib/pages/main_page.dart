@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stdio_week_6/blocs/bottom_appbar_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
@@ -6,7 +7,9 @@ import 'package:stdio_week_6/models/user.dart';
 import 'package:stdio_week_6/pages/bookmark_page.dart';
 import 'package:stdio_week_6/pages/discover_page.dart';
 import 'package:stdio_week_6/pages/home_page.dart';
+import 'package:stdio_week_6/pages/offline_page.dart';
 import 'package:stdio_week_6/pages/profile_page.dart';
+import 'package:stdio_week_6/services/network/network_service.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -60,6 +63,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final networkStatus = context.watch<NetworkStatus>();
     return StreamBuilder<int>(
         stream: _bottomBarBloc.stream,
         builder: (context, snapshot) {
@@ -70,7 +74,9 @@ class _MainPageState extends State<MainPage> {
           }
           final currentIndex = snapshot.data!;
           return Scaffold(
-              body: _pages[currentIndex],
+              body: networkStatus == NetworkStatus.online
+                  ? _pages[currentIndex]
+                  : const OfflinePage(),
               bottomNavigationBar: BottomNavigationBar(
                 elevation: 0,
                 type: BottomNavigationBarType.fixed,

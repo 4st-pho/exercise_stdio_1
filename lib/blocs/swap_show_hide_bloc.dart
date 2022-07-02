@@ -1,19 +1,19 @@
 import 'dart:async';
 
-class LoginBloc {
-  bool isPasswordVisible = false;
+class SwapShowHideBloc {
+  bool isVisible = false;
   final _controller = StreamController<bool>();
   Stream<bool> get stream => _controller.stream;
   void init() {
-    _controller.sink.add(isPasswordVisible);
+    _controller.sink.add(isVisible);
   }
 
   void toggleShow() {
-    isPasswordVisible = !isPasswordVisible;
-    _controller.sink.add(isPasswordVisible);
+    isVisible = !isVisible;
+    _controller.sink.add(isVisible);
   }
 
-  LoginBloc() {
+  SwapShowHideBloc() {
     init();
   }
   void dispose() {

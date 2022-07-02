@@ -29,12 +29,15 @@ class _HotelcardImageState extends State<HotelcardImage> {
       children: [
         ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(16)),
-          child: FadeInImage.assetNetwork(
-            image: widget.imagePath,
-            height: 162,
-            width: double.infinity,
-            fit: BoxFit.cover,
-            placeholder: AssetsImage.fadeImage,
+          child: Hero(
+                  tag: widget.hotelId,
+            child: FadeInImage.assetNetwork(
+              image: widget.imagePath,
+              height: 162,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              placeholder: AssetsImage.fadeImage,
+            ),
           ),
         ),
         StreamBuilder<List<String>>(

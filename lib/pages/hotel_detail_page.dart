@@ -5,7 +5,7 @@ import 'package:stdio_week_6/pages/widgets/review_hotel.dart';
 import 'package:stdio_week_6/pages/widgets/description.dart';
 import 'package:stdio_week_6/pages/widgets/detail_hotel_bar.dart';
 import 'package:stdio_week_6/pages/widgets/hotel_info.dart';
-import 'package:stdio_week_6/pages/widgets/title_review.dart';
+import 'package:stdio_week_6/services/cloud_firestore/hotel_firestore.dart';
 
 class HotelDetailPage extends StatelessWidget {
   const HotelDetailPage({Key? key, required this.hotel}) : super(key: key);
@@ -13,7 +13,6 @@ class HotelDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final reviews = hotel.reviews;
     return Scaffold(
       body: CustomScrollView(slivers: <Widget>[
         SliverAppBar(
@@ -25,9 +24,35 @@ class HotelDetailPage extends StatelessWidget {
           backgroundColor: MyColor.grey,
           expandedHeight: 300,
           flexibleSpace: FlexibleSpaceBar(
-            background: Image.network(
-              hotel.imagePath,
-              fit: BoxFit.cover,
+            background: Stack(
+              children: [
+                Hero(
+                  tag: hotel.id,
+                  child: Image.network(
+                    hotel.imagePath,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: <Color>[
+                      Colors.black.withOpacity(0.3),
+                      Colors.black.withOpacity(0.3),
+                      Colors.transparent,
+                      Colors.transparent,
+                      Colors.transparent,
+                      Colors.transparent,
+                      Colors.transparent,
+                    ],
+                    tileMode: TileMode.mirror,
+                  )),
+                ),
+              ],
             ),
           ),
           bottom: PreferredSize(
@@ -46,25 +71,35 @@ class HotelDetailPage extends StatelessWidget {
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(left: 16, right: 16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HotelInfo(
-                    reviewsQuantity: hotel.reviews.length,
-                    name: hotel.name,
-                    address: hotel.address,
-                    rating: hotel.rating),
-                const SizedBox(height: 28),
-                Description(text: hotel.description),
-                const SizedBox(height: 28),
-                TitleReview(reviews: reviews)
-              ],
-            ),
+            child: StreamBuilder<Hotel>(
+                stream: HotelFirestore().streamHotel(hotel.id),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const SizedBox();
+                  }
+                  final hotelStream = snapshot.data!;
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HotelInfo(
+                        reviewsQuantity: hotelStream.reviews.length,
+                        name: hotelStream.name,
+                        address: hotelStream.address,
+                        rating: hotelStream.rating,
+                      ),
+                      const SizedBox(height: 28),
+                      Description(text: hotelStream.description),
+                      const SizedBox(height: 28),
+                      ReviewHotel(
+                        hotelId: hotelStream.id,
+                        hotelName: hotelStream.name,
+                        reviews: hotelStream.reviews,
+                      ),
+                    ],
+                  );
+                }),
           ),
         ),
-        SliverToBoxAdapter(
-          child: ReviewHotel(reviews: reviews),
-        )
       ]),
     );
   }

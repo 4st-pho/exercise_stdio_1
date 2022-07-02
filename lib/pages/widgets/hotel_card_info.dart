@@ -25,7 +25,7 @@ class HotelCardInfo extends StatelessWidget {
             const SizedBox(width: 20),
             ...getRating(rating),
             const SizedBox(width: 5),
-            Text('$rating')
+            Text(rating.toStringAsFixed(1))
           ],
         ),
         const SizedBox(

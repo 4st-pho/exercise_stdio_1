@@ -4,6 +4,7 @@ import 'package:stdio_week_6/models/hotel.dart';
 import 'package:stdio_week_6/pages/hotel_detail_page.dart';
 import 'package:stdio_week_6/pages/widgets/hote_card_image.dart';
 import 'package:stdio_week_6/pages/widgets/hotel_card_info.dart';
+import 'package:stdio_week_6/services/cloud_firestore/hotel_firestore.dart';
 
 class HotelCard extends StatefulWidget {
   const HotelCard({Key? key, required this.hotel}) : super(key: key);
@@ -48,11 +49,23 @@ class _HotelCardState extends State<HotelCard> {
             const SizedBox(
               height: 18,
             ),
-            HotelCardInfo(
-              hotelName: widget.hotel.name,
-              address: widget.hotel.address,
-              rating: widget.hotel.rating,
-            ),
+            StreamBuilder<Hotel>(
+                stream: HotelFirestore().streamHotel(widget.hotel.id),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return HotelCardInfo(
+                      hotelName: widget.hotel.name,
+                      address: widget.hotel.address,
+                      rating: widget.hotel.rating,
+                    );
+                  }
+                  final hotel = snapshot.data!;
+                  return HotelCardInfo(
+                    hotelName: hotel.name,
+                    address: hotel.address,
+                    rating: hotel.rating,
+                  );
+                }),
           ],
         ),
       ),

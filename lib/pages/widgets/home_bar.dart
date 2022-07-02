@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/show_snackbar.dart';
 import 'package:stdio_week_6/models/user.dart';
 import 'package:stdio_week_6/pages/add_hotel_page.dart';
+import 'package:stdio_week_6/widgets/image_button.dart';
 
 class HomeBar extends StatelessWidget {
   final BuildContext context;
@@ -33,7 +35,7 @@ class HomeBar extends StatelessWidget {
               ],
             ),
           ),
-          InkWell(
+          ImageButton(
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(
@@ -44,11 +46,7 @@ class HomeBar extends StatelessWidget {
                   }
                 });
               },
-              child: Image.asset(
-                'assets/icons/add.png',
-                height: 24,
-                width: 24,
-              )),
+              assetsIcon: AssetsIcon.add)
         ],
       ),
     );

@@ -6,9 +6,6 @@ import 'package:image_picker/image_picker.dart';
 class ChangeImageBloc {
   final _controller = StreamController<File?>();
   Stream<File?> get stream => _controller.stream;
-  void init() {
-    _controller.sink.add(null);
-  }
 
   Future getImage() async {
     final ImagePicker picker = ImagePicker();
@@ -17,9 +14,6 @@ class ChangeImageBloc {
     _controller.sink.add(File(image.path));
   }
 
-  ChangeImageBloc() {
-    init();
-  }
   void dispose() {
     _controller.close();
   }

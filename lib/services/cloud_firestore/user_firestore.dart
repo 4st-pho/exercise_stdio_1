@@ -51,4 +51,10 @@ class UserFirestore {
         .doc(FirebaseAuth.instance.currentUser!.uid);
     await docUser.update({'follow': follow.toList()});
   }
+    // get stream follow list from cloud firestore
+  Stream<List<String>> get streamBookmark => _firestore
+      .collection(CollectionPath.users)
+      .doc(FirebaseAuth.instance.currentUser!.uid)
+      .snapshots()
+      .map((json) => List<String>.from(json["follow"].map((x) => x)));
 }

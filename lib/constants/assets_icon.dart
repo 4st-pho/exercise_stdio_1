@@ -1,7 +1,10 @@
 class IconName {}
 
 class AssetsIcon {
+  static const add = 'assets/icons/add.png';
+  static const like = 'assets/icons/like.png';
   static const back = 'assets/icons/back.png';
+  static const arrowBack = 'assets/icons/arow_black.png';
   static const export = 'assets/icons/export.png';
   static const location = 'assets/icons/location.png';
   static const home = 'assets/icons/home.png';

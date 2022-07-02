@@ -7,7 +7,7 @@ class FirebaseAuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //Send email verification
-  Future<void> sendEmailVerification({
+  void sendEmailVerification({
     required BuildContext context,
   }) async {
     try {
@@ -18,13 +18,31 @@ class FirebaseAuthMethods {
     }
   }
 
+  //Send email verification
+  Future<void> resetPassword(
+      {required BuildContext context, required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email.trim());
+      showSnackBar(
+          context: context,
+          content: 'Instructions for resetting the password have been sent!');
+
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop();
+    } on FirebaseAuthException catch (e) {
+      showSnackBar(context: context, content: e.message!, error: true);
+    }
+  }
+
   Stream<User?> get authState => FirebaseAuth.instance.authStateChanges();
+
   //Sign up
-  Future<void> signUpWithEmailAndPassword({
+  Future<String> signUpWithEmailAndPassword({
     required String email,
     required String password,
     required BuildContext context,
   }) async {
+    String message = 'success';
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email.trim(), password: password.trim());
@@ -32,10 +50,12 @@ class FirebaseAuthMethods {
           .createUser(uid: FirebaseAuth.instance.currentUser!.uid);
     } on FirebaseAuthException catch (e) {
       showSnackBar(context: context, content: e.message!, error: true);
+      message = e.message!;
     }
+    return message;
   }
 
-  //Sign in
+  // sign in
   Future<void> signinWithEmailAndPassword({
     required String email,
     required String password,

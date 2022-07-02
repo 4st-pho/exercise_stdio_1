@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/change_image_bloc.dart';
 import 'package:stdio_week_6/blocs/loading_bloc.dart';
+import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/collection_path.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/build_text_form_field.dart';
@@ -49,91 +50,100 @@ class _AddHotelPageState extends State<AddHotelPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Image.asset(
-              'assets/icons/arow_black.png',
-              height: 24,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            }),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: const Text('Add hotel', style: MyFont.blackHeading),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Expanded(
-              child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      buildTextFormFeild(
-                          controller: nameController,
-                          subtitle:
-                              'Do not exceed 40 characters when entering.',
-                          title: 'Hotel name',
-                          type: TextInputType.text),
-                      buildTextFormFeild(
-                          controller: addressController,
-                          title: 'Address',
-                          type: TextInputType.text),
-                      buildTextFormFeild(
-                          controller: descriptionController,
-                          title: 'Desciption',
-                          type: TextInputType.multiline),
-                    ],
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+        if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+      },
+      child: Scaffold(
+        extendBody: true,
+        appBar: AppBar(
+          leading: IconButton(
+              icon: Image.asset(
+                AssetsIcon.arrowBack,
+                height: 24,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          title: const Text('Add hotel', style: MyFont.blackHeading),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Expanded(
+                child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                          const SizedBox(height: 10),
+                        buildTextFormFeild(
+                            controller: nameController,
+                            subtitle:
+                                'Do not exceed 40 characters when entering.',
+                            title: 'Hotel name',
+                            type: TextInputType.text),
+                          const SizedBox(height: 10),
+                        buildTextFormFeild(
+                            controller: addressController,
+                            title: 'Address',
+                            type: TextInputType.text),
+                          const SizedBox(height: 10),
+                        buildTextFormFeild(
+                            controller: descriptionController,
+                            title: 'Desciption',
+                            type: TextInputType.multiline),
+                      ],
+                    ),
                   ),
-                ),
-                const Text('Hotel image', style: MyFont.blackTitle),
-                const SizedBox(height: 10),
-                StreamBuilder<File?>(
-                  stream: _addHotelBloc.stream,
-                  initialData: null,
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    final imageFile = snapshot.data;
-                    file = imageFile;
-                    return imageFile == null
-                        ? DottedImage(onPressed: () async {
-                            await _addHotelBloc.getImage();
-                          })
-                        : InkWell(
-                            onTap: () async {
+                  const Text('Hotel image', style: MyFont.blackTitle),
+                  const SizedBox(height: 10),
+                  StreamBuilder<File?>(
+                    stream: _addHotelBloc.stream,
+                    initialData: null,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      final imageFile = snapshot.data;
+                      file = imageFile;
+                      return imageFile == null
+                          ? DottedImage(onPressed: () async {
                               await _addHotelBloc.getImage();
-                            },
-                            child: ImageBorder(imageFile: imageFile),
-                          );
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                )
-              ],
-            ),
-          )),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Row(
-              children: [
-                Flexible(
-                  flex: 4,
-                  child: CustomOutlineButton(
-                      text: 'Cancel',
-                      onPress: () {
-                        Navigator.of(context).pop();
-                      }),
-                ),
-                const Flexible(flex: 1, fit: FlexFit.tight, child: SizedBox()),
-                StreamBuilder<bool>(
+                            })
+                          : InkWell(
+                              onTap: () async {
+                                await _addHotelBloc.getImage();
+                              },
+                              child: ImageBorder(imageFile: imageFile));
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  )
+                ],
+              ),
+            )),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 4,
+                    child: CustomOutlineButton(
+                        text: 'Cancel',
+                        onPress: () {
+                          Navigator.of(context).pop();
+                        }),
+                  ),
+                  const Flexible(
+                      flex: 1, fit: FlexFit.tight, child: SizedBox()),
+                  StreamBuilder<bool>(
                     stream: _loadingBloc.stream,
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
@@ -158,19 +168,9 @@ class _AddHotelPageState extends State<AddHotelPage> {
                                   if (nameController.text.length > 40) {
                                     error = 'Name exceeds 40 characters. ';
                                   }
-                                  if (addressController.text.length < 11) {
-                                    error +=
-                                        'Address must be more than 10 characters. ';
-                                  }
-                                  if (descriptionController.text.length < 11) {
-                                    error +=
-                                        'Description must be more than 10 characters. ';
-                                  }
                                   if (file == null) {
                                     error += 'Image is required.';
                                   }
-                                  ScaffoldMessenger.of(context)
-                                      .hideCurrentSnackBar();
                                   if (error.isNotEmpty) {
                                     showSnackBar(
                                       context: context,
@@ -188,16 +188,18 @@ class _AddHotelPageState extends State<AddHotelPage> {
                                       file: file,
                                       collectionImagePath:
                                           CollectionPath.hotelImage);
-                                  // ignore: use_build_context_synchronously
+                                  if (!mounted) return;
                                   Navigator.of(context).pop("Success");
                                 },
                         ),
                       );
-                    })
-              ],
-            ),
-          )
-        ]),
+                    },
+                  )
+                ],
+              ),
+            )
+          ]),
+        ),
       ),
     );
   }

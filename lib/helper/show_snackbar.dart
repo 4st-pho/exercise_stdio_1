@@ -1,19 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:stdio_week_6/constants/my_font.dart';
 
 void showSnackBar(
     {required BuildContext context,
     required String content,
+    String title = '',
     bool error = false,
-    int milisecond = 1200 }) {
+    int milisecond = 1200}) {
   final snackBar = SnackBar(
-      duration: Duration(milliseconds: milisecond),
-      content: Text(content.trim(),
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 17,
-          )),
-      backgroundColor: error ? Colors.red : Colors.green);
-
+    content: Padding(
+      padding: const EdgeInsets.all(4),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (title.isNotEmpty)
+            Row(children: [
+              Expanded(child: Text(title, style: MyFont.whiteTitle))
+            ]),
+          Row(
+            children: [
+              Expanded(
+                child: Text(content.trim(),
+                    textAlign: TextAlign.center, style: MyFont.whiteTitle),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+    duration: Duration(milliseconds: milisecond),
+    backgroundColor: error ? Colors.red : Colors.green,
+    // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+    // margin: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+    // behavior: SnackBarBehavior.floating,
+  );
+  ScaffoldMessenger.of(context).removeCurrentSnackBar();
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

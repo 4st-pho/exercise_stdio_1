@@ -17,6 +17,7 @@ class Hotel {
     required this.rating,
     required this.reviews,
     required this.imagePath,
+    required this.createdAt,
   });
 
   final String id;
@@ -27,6 +28,7 @@ class Hotel {
   String imagePath;
   double rating;
   List<Review> reviews;
+  DateTime createdAt;
 
   factory Hotel.fromJson(Map<String, dynamic> json) => Hotel(
         id: json["id"],
@@ -38,6 +40,7 @@ class Hotel {
         reviews:
             List<Review>.from(json["reviews"].map((e) => Review.fromJson(e))),
         imagePath: json["imagePath"],
+        createdAt: DateTime.parse(json["createdAt"])
       );
 
   Map<String, dynamic> toJson() => {
@@ -49,7 +52,7 @@ class Hotel {
         "rating": rating,
         "reviews": List<dynamic>.from(reviews.map((e) => e.toJson())),
         "imagePath": imagePath,
+        "createdAt": createdAt.toString(),
       };
 }
 
-List<Hotel> hotels = [];

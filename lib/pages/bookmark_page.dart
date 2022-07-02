@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/bookmark_bloc.dart';
+import 'package:stdio_week_6/constants/shimmer_loading.dart';
 import 'package:stdio_week_6/models/hotel.dart';
 import 'package:stdio_week_6/pages/widgets/hotel_card.dart';
+import 'package:stdio_week_6/services/cloud_firestore/user_firestore.dart';
 
 class BookmarkPage extends StatefulWidget {
   const BookmarkPage({Key? key}) : super(key: key);
@@ -11,7 +13,6 @@ class BookmarkPage extends StatefulWidget {
 }
 
 class _BookmarkPageState extends State<BookmarkPage> {
-
   final _bookmarkBloc = BookmarkBloc();
 
   @override
@@ -19,21 +20,31 @@ class _BookmarkPageState extends State<BookmarkPage> {
     _bookmarkBloc.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Hotel>>(
-        stream: _bookmarkBloc.stream,
+    return StreamBuilder<List<String>>(
+        stream: UserFirestore().streamBookmark,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
+            return ShimmerLoading.listHotelCard;
           }
-          final hotels = snapshot.data!;
-          return ListView.builder(
-            itemCount: hotels.length,
-            itemBuilder: (BuildContext context, int index) {
-              return HotelCard(hotel: hotels[index]);
-            },
-          );
+          final hotelIds = snapshot.data!;
+          _bookmarkBloc.init(hotelIds);
+          return StreamBuilder<List<Hotel>>(
+              stream: _bookmarkBloc.stream,
+              builder: (context, snap) {
+                if (!snap.hasData) {
+                  return ShimmerLoading.listHotelCard;
+                }
+                final hotels = snap.data!;
+                return ListView.builder(
+                  itemCount: hotels.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return HotelCard(hotel: hotels[index]);
+                  },
+                );
+              });
         });
   }
 }

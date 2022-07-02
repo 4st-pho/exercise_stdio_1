@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:stdio_week_6/blocs/search_result_page_bloc.dart';
 import 'package:stdio_week_6/blocs/switch_list_type_bloc.dart';
-import 'package:stdio_week_6/constants/assest_image.dart';
+import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/models/hotel.dart';
 import 'package:stdio_week_6/pages/hotel_detail_page.dart';
+import 'package:stdio_week_6/pages/offline_page.dart';
+import 'package:stdio_week_6/pages/widgets/search_result_item.dart';
 import 'package:stdio_week_6/widgets/custom_loading.dart';
 
+import '../services/network/network_service.dart';
+
 class SearchResultPage extends StatefulWidget {
-  const SearchResultPage({Key? key, required this.result}) : super(key: key);
-  final List<Hotel> result;
+  const SearchResultPage({Key? key, required this.keywork}) : super(key: key);
+  final String keywork;
 
   @override
   State<SearchResultPage> createState() => _SearchResultPageState();
@@ -19,6 +25,7 @@ class _SearchResultPageState extends State<SearchResultPage>
     with TickerProviderStateMixin {
   final _switchListTypeBloc = SwitchListTypeBloc();
   late AnimationController _animationController;
+  final _searchResultPageBloc = SearchResultPageBloc();
 
   @override
   void initState() {
@@ -32,10 +39,13 @@ class _SearchResultPageState extends State<SearchResultPage>
     super.dispose();
     _animationController.dispose();
     _switchListTypeBloc.dispose();
+    _searchResultPageBloc.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final networkStatus = context.watch<NetworkStatus>();
+    _searchResultPageBloc.init(widget.keywork);
     return StreamBuilder<bool>(
         stream: _switchListTypeBloc.stream,
         builder: (context, snapshot) {
@@ -46,9 +56,15 @@ class _SearchResultPageState extends State<SearchResultPage>
 
           return Scaffold(
             appBar: AppBar(
-              title: const Text(
-                'Result',
-                style: MyFont.blueHeading,
+              leading: IconButton(
+                  icon: Image.asset(
+                    AssetsIcon.arrowBack,
+                    height: 24,
+                  ),
+                  onPressed: () => Navigator.of(context).pop()),
+              title: Text(
+                'Results for "${widget.keywork}"',
+                style: MyFont.blackTitle,
               ),
               actions: [
                 Align(
@@ -69,57 +85,54 @@ class _SearchResultPageState extends State<SearchResultPage>
                 ),
                 const SizedBox(width: 18)
               ],
-              foregroundColor: MyColor.blue,
+              foregroundColor: MyColor.black,
               backgroundColor: MyColor.background,
               elevation: 0,
               centerTitle: true,
             ),
-            body: GridView.builder(
-                itemCount: widget.result.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: isGrid ? 2 : 1,
-                    childAspectRatio: 3 / 2,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10),
-                itemBuilder: (context, index) {
-                  final hotel = widget.result[index];
-                  return InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => HotelDetailPage(hotel: hotel)));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 2,
-                          blurRadius: 6,
-                          // offset: Offset(0, 7), // changes position of shadow
-                        ),
-                      ]),
-                      child: Stack(
-                        children: [
-                          FadeInImage.assetNetwork(
-                            placeholder: AssetsImage.fadeImageLoading,
-                            image: hotel.imagePath,
-                            width: double.infinity,
-                            height: 350,
-                            fit: BoxFit.cover,
-                          ),
-                          Align(
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Text(
-                                hotel.name,
-                                style: MyFont.whiteSpacing,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                        ],
+            body: StreamBuilder<List<Hotel>>(
+                stream: _searchResultPageBloc.stream,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const CustomLoading();
+                  }
+                  final hotels = snapshot.data!;
+                  if (networkStatus == NetworkStatus.offline) {
+                    return const OfflinePage();
+                  }
+                  if (hotels.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Not found!',
+                        style: MyFont.blackTitle,
                       ),
-                    ),
-                  );
+                    );
+                  }
+                  return GridView.builder(
+                      itemCount: hotels.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: isGrid ? 2 : 1,
+                        childAspectRatio: isGrid ? 2 / 3 : 3 / 2,
+                      ),
+                      itemBuilder: (context, index) {
+                        final hotel = hotels[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      HotelDetailPage(hotel: hotel)));
+                            },
+                            child: SearchResutItem(
+                                name: hotel.name,
+                                isGrid: _switchListTypeBloc.isGrid,
+                                address: hotel.address,
+                                rating: hotel.rating,
+                                imagePath: hotel.imagePath),
+                          ),
+                        );
+                      });
                 }),
           );
         });

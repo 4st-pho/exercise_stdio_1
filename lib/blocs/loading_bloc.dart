@@ -4,9 +4,6 @@ class LoadingBloc {
   bool isLoading = false;
   final _controller = StreamController<bool>();
   Stream<bool> get stream => _controller.stream;
-  void init() {
-    _controller.sink.add(isLoading);
-  }
 
   void toggleState() {
     isLoading = !isLoading;
@@ -14,7 +11,7 @@ class LoadingBloc {
   }
 
   LoadingBloc() {
-    init();
+    _controller.sink.add(isLoading);
   }
   void dispose() {
     _controller.close();

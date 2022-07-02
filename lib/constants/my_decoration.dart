@@ -6,4 +6,7 @@ class MyDecoration {
     borderRadius: BorderRadius.all(Radius.circular(8)),
     borderSide: BorderSide(color: MyColor.grey),
   );
+
+  static const underlineInputBorder = UnderlineInputBorder(
+      borderSide: BorderSide(color: MyColor.primaryGrey, width: 2));
 }

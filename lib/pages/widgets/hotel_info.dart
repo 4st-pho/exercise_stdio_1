@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/get_rating.dart';
 
@@ -32,14 +33,14 @@ class HotelInfo extends StatelessWidget {
             ),
             const SizedBox(width: 8),
             reviewsQuantity == 0
-                ? Text('$rating ($reviewsQuantity review)')
-                : Text('$rating ($reviewsQuantity reviews)')
+                ? Text('${rating.toStringAsFixed(1)} ($reviewsQuantity review)')
+                : Text('${rating.toStringAsFixed(1)} ($reviewsQuantity reviews)')
           ],
         ),
         const SizedBox(height: 8),
         Row(
           children: [
-            Image.asset('assets/icons/location.png', height: 14),
+            Image.asset(AssetsIcon.location, height: 14),
             const SizedBox(width: 10),
             Expanded(
                 child: Text(

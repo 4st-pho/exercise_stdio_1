@@ -3,6 +3,7 @@ import 'package:stdio_week_6/blocs/hotel_card_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/models/hotel.dart';
 import 'package:stdio_week_6/pages/map_page.dart';
+import 'package:stdio_week_6/widgets/image_button.dart';
 
 class DetailHotelBar extends StatefulWidget {
   const DetailHotelBar({Key? key, required this.hotel}) : super(key: key);
@@ -14,28 +15,6 @@ class DetailHotelBar extends StatefulWidget {
 
 class _DetailHotelBarState extends State<DetailHotelBar> {
   final _hotelCardBloc = HotelCardBloc();
-  Widget buidImageButton(
-      {required VoidCallback onTap, required String assetsIcon}) {
-    return Container(
-      decoration: const BoxDecoration(
-        shape: BoxShape.circle,
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, 0.25),
-            spreadRadius: 4,
-            offset: Offset(0, 0), // changes position of shadow
-          ),
-        ],
-      ),
-      child: InkWell(
-        onTap: onTap,
-        child: Image.asset(
-          assetsIcon,
-          height: 24,
-        ),
-      ),
-    );
-  }
 
   @override
   void dispose() {
@@ -47,7 +26,7 @@ class _DetailHotelBarState extends State<DetailHotelBar> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        buidImageButton(
+        ImageButton(
           onTap: () {
             Navigator.of(context).pop();
           },
