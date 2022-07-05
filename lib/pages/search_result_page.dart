@@ -63,7 +63,7 @@ class _SearchResultPageState extends State<SearchResultPage>
                   ),
                   onPressed: () => Navigator.of(context).pop()),
               title: Text(
-                'Results for "${widget.keywork}"',
+                'Results for "${widget.keywork.trim()}"',
                 style: MyFont.blackTitle,
               ),
               actions: [

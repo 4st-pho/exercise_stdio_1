@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:stdio_week_6/constants/collection_path.dart';
+import 'package:stdio_week_6/helper/show_snackbar.dart';
 import 'package:stdio_week_6/models/user.dart' as model;
 import 'package:stdio_week_6/services/firebase_storage/storage_methods.dart';
 
@@ -34,6 +36,7 @@ class UserFirestore {
   Future updateUserProfile(
       {required String name,
       required File? file,
+      required BuildContext context,
       required String avataLink}) async {
     String avatar = file == null
         ? avataLink
@@ -42,7 +45,13 @@ class UserFirestore {
     final docUser = _firestore
         .collection(CollectionPath.users)
         .doc(FirebaseAuth.instance.currentUser!.uid);
-    await docUser.update({'name': name.trim(), 'avatar': avatar});
+    try {
+      await docUser.update({'name': name.trim(), 'avatar': avatar});
+      showSnackBar(
+          context: context, content: 'Update successfully!', title: 'Update');
+    } catch (e) {
+      showSnackBar(context: context, content: e.toString(), title: 'Error');
+    }
   }
 
   void updateFollow({required List<String> follow}) async {
@@ -51,7 +60,8 @@ class UserFirestore {
         .doc(FirebaseAuth.instance.currentUser!.uid);
     await docUser.update({'follow': follow.toList()});
   }
-    // get stream follow list from cloud firestore
+
+  // get stream follow list from cloud firestore
   Stream<List<String>> get streamBookmark => _firestore
       .collection(CollectionPath.users)
       .doc(FirebaseAuth.instance.currentUser!.uid)

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/loading_bloc.dart';
 import 'package:stdio_week_6/blocs/swap_show_hide_bloc.dart';
+import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/build_password_text_form_field.dart';
+import 'package:stdio_week_6/helper/hide_keyboard.dart';
 import 'package:stdio_week_6/helper/show_snackbar.dart';
 import 'package:stdio_week_6/services/firebase_auth/firebase_auth_methods.dart';
 import 'package:stdio_week_6/widgets/custom_button.dart';
@@ -52,7 +54,7 @@ class _SignUpPageState extends State<SignUpPage> {
         appBar: AppBar(
             leading: IconButton(
                 icon: Image.asset(
-                  'assets/icons/arow_black.png',
+                  AssetsIcon.arrowBack,
                   height: 24,
                 ),
                 onPressed: () {
@@ -63,10 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
             elevation: 0),
         body: GestureDetector(
           onTap: () {
-            FocusScopeNode currentFocus = FocusScope.of(context);
-            if (!currentFocus.hasPrimaryFocus) {
-              currentFocus.unfocus();
-            }
+            hideKeyboard(context: context);
           },
           child: SingleChildScrollView(
             reverse: true,
@@ -86,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        buildTextFormFeild(
+                        BuildTextFormFeild(
                             controller: _emailController,
                             title: 'Email',
                             type: TextInputType.emailAddress,
@@ -101,7 +100,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 );
                               }
                               final isPasswordVisible = snapshot.data!;
-                              return buildPasswordTextFormField(
+                              return BuildPasswordTextFormField(
                                   controller: _passwordController,
                                   title: 'Password',
                                   isPasswordVisible: isPasswordVisible,
@@ -128,7 +127,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 );
                               }
                               final isPasswordVisible = snapshot.data!;
-                              return buildPasswordTextFormField(
+                              return BuildPasswordTextFormField(
                                   controller: _confirmPasswordController,
                                   title: 'Confirm password',
                                   isPasswordVisible: isPasswordVisible,
@@ -159,6 +158,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 onPress: isLoading
                                     ? null
                                     : () async {
+                                        hideKeyboard(context: context);
                                         _loadingBloc.toggleState();
                                         if (!_formKey.currentState!
                                             .validate()) {

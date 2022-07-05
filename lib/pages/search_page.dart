@@ -3,6 +3,7 @@ import 'package:stdio_week_6/blocs/search_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
+import 'package:stdio_week_6/helper/hide_keyboard.dart';
 import 'package:stdio_week_6/models/hotel.dart';
 import 'package:stdio_week_6/widgets/image_button.dart';
 
@@ -38,8 +39,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       body: InkWell(
         onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+          hideKeyboard(context: context);
         },
         child: SafeArea(
           child: Padding(

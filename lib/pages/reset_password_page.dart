@@ -3,6 +3,7 @@ import 'package:stdio_week_6/blocs/loading_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/build_text_form_field.dart';
+import 'package:stdio_week_6/helper/hide_keyboard.dart';
 import 'package:stdio_week_6/services/firebase_auth/firebase_auth_methods.dart';
 import 'package:stdio_week_6/widgets/custom_button.dart';
 
@@ -36,8 +37,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+        hideKeyboard(context: context);
       },
       child: Scaffold(
         appBar: AppBar(
@@ -66,7 +66,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 style: MyFont.greyTitle,
               ),
               const Flexible(child: SizedBox(height: 40)),
-              buildTextFormFeild(
+              BuildTextFormFeild(
                   controller: _emailController,
                   title: 'Email address',
                   type: TextInputType.emailAddress),
@@ -81,6 +81,11 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         onPress: isloading
                             ? null
                             : () {
+                                FocusScopeNode currentFocus =
+                                    FocusScope.of(context);
+                                if (!currentFocus.hasPrimaryFocus) {
+                                  currentFocus.unfocus();
+                                }
                                 _loadingBloc.toggleState();
                                 FirebaseAuthMethods().resetPassword(
                                     context: context,

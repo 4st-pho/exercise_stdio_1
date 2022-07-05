@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stdio_week_6/constants/assest_image.dart';
+import 'package:stdio_week_6/constants/assests_image.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/get_rating.dart';

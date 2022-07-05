@@ -27,7 +27,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
         stream: UserFirestore().streamBookmark,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return ShimmerLoading.listHotelCard;
+            return ShimmerLoading.listBookmarkCard;
           }
           final hotelIds = snapshot.data!;
           _bookmarkBloc.init(hotelIds);
@@ -35,7 +35,7 @@ class _BookmarkPageState extends State<BookmarkPage> {
               stream: _bookmarkBloc.stream,
               builder: (context, snap) {
                 if (!snap.hasData) {
-                  return ShimmerLoading.listHotelCard;
+                  return ShimmerLoading.listBookmarkCard;
                 }
                 final hotels = snap.data!;
                 return ListView.builder(

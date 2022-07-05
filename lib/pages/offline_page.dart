@@ -1,6 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:stdio_week_6/constants/assest_image.dart';
+import 'package:stdio_week_6/constants/assests_image.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/services/network/network_service.dart';
 import 'package:stdio_week_6/widgets/custom_button.dart';

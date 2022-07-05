@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:native_notify/native_notify.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +22,7 @@ void main() async {
         statusBarIconBrightness: Brightness.dark),
   );
   WidgetsFlutterBinding.ensureInitialized();
+  NativeNotify.initialize(1002, 'ozFPB6GbNVyCQ7kY3NoSbr', null, null);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -35,14 +37,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<FirebaseAuthMethods>(
-          create: (_) => FirebaseAuthMethods(),
-        ),
         Provider<NetWorkService>(
           create: (_) => NetWorkService(),
         ),
         StreamProvider(
-          create: (context) => context.read<FirebaseAuthMethods>().authState,
+          create: (context) => FirebaseAuthMethods().authState,
           initialData: null,
         ),
         StreamProvider(

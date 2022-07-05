@@ -7,6 +7,7 @@ import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/collection_path.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/build_text_form_field.dart';
+import 'package:stdio_week_6/helper/hide_keyboard.dart';
 import 'package:stdio_week_6/helper/show_snackbar.dart';
 import 'package:stdio_week_6/pages/widgets/dotted_image.dart';
 import 'package:stdio_week_6/pages/widgets/image_border.dart';
@@ -52,17 +53,13 @@ class _AddHotelPageState extends State<AddHotelPage> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-        if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+        hideKeyboard(context: context);
       },
       child: Scaffold(
         extendBody: true,
         appBar: AppBar(
           leading: IconButton(
-              icon: Image.asset(
-                AssetsIcon.arrowBack,
-                height: 24,
-              ),
+              icon: Image.asset(AssetsIcon.arrowBack, height: 24),
               onPressed: () {
                 Navigator.of(context).pop();
               }),
@@ -84,53 +81,51 @@ class _AddHotelPageState extends State<AddHotelPage> {
                     key: _formKey,
                     child: Column(
                       children: [
-                          const SizedBox(height: 10),
-                        buildTextFormFeild(
+                        const SizedBox(height: 10),
+                        BuildTextFormFeild(
                             controller: nameController,
                             subtitle:
                                 'Do not exceed 40 characters when entering.',
                             title: 'Hotel name',
                             type: TextInputType.text),
-                          const SizedBox(height: 10),
-                        buildTextFormFeild(
+                        const SizedBox(height: 10),
+                        BuildTextFormFeild(
                             controller: addressController,
                             title: 'Address',
                             type: TextInputType.text),
-                          const SizedBox(height: 10),
-                        buildTextFormFeild(
+                        const SizedBox(height: 10),
+                        BuildTextFormFeild(
                             controller: descriptionController,
                             title: 'Desciption',
                             type: TextInputType.multiline),
                       ],
                     ),
                   ),
+                  const SizedBox(height: 10),
                   const Text('Hotel image', style: MyFont.blackTitle),
                   const SizedBox(height: 10),
                   StreamBuilder<File?>(
-                    stream: _addHotelBloc.stream,
-                    initialData: null,
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      final imageFile = snapshot.data;
-                      file = imageFile;
-                      return imageFile == null
-                          ? DottedImage(onPressed: () async {
-                              await _addHotelBloc.getImage();
-                            })
-                          : InkWell(
-                              onTap: () async {
+                      stream: _addHotelBloc.stream,
+                      initialData: null,
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        final imageFile = snapshot.data;
+                        file = imageFile;
+                        return imageFile == null
+                            ? DottedImage(onPressed: () async {
                                 await _addHotelBloc.getImage();
-                              },
-                              child: ImageBorder(imageFile: imageFile));
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  )
+                              })
+                            : InkWell(
+                                onTap: () async {
+                                  await _addHotelBloc.getImage();
+                                },
+                                child: ImageBorder(imageFile: imageFile));
+                      }),
+                  const SizedBox(height: 20)
                 ],
               ),
             )),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: Row(
                 children: [
                   Flexible(
@@ -159,6 +154,7 @@ class _AddHotelPageState extends State<AddHotelPage> {
                           onPress: loading
                               ? null
                               : () async {
+                                  hideKeyboard(context: context);
                                   _loadingBloc.toggleState();
                                   if (!_formKey.currentState!.validate()) {
                                     _loadingBloc.toggleState();
@@ -189,7 +185,11 @@ class _AddHotelPageState extends State<AddHotelPage> {
                                       collectionImagePath:
                                           CollectionPath.hotelImage);
                                   if (!mounted) return;
-                                  Navigator.of(context).pop("Success");
+                                  showSnackBar(
+                                      context: context,
+                                      content: 'Add succesfully!',
+                                      title: "Add new hotel");
+                                  Navigator.of(context).pop();
                                 },
                         ),
                       );

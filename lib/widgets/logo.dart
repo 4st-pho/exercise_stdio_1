@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:stdio_week_6/constants/assests_image.dart';
 
 class Logo extends StatelessWidget {
   const Logo({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class Logo extends StatelessWidget {
     return Stack(
       children: [
         Image.asset(
-          'assets/images/bg_logo_1.png',
+          AssetsImage.bgLogo1,
           height: 127,
           width: 186,
         ),
@@ -16,7 +17,7 @@ class Logo extends StatelessWidget {
           left: 186 / 2 - 50,
           bottom: 0,
           child: Image.asset(
-            'assets/images/logo_1.png',
+            AssetsImage.logo1,
             height: 100,
           ),
         ),

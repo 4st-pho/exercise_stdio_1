@@ -36,7 +36,7 @@ class User {
 
 User currenUser = User(
   id: 'u1',
-  name: 'Loading',
+  name: '.....',
   avatar:
       'https://w7.pngwing.com/pngs/516/431/png-transparent-female-profile-avatar-illustration-computer-icons-female-user-profile-female-girl-wife-woman-icon-miscellaneous-logo-monochrome.png',
   follow: [],

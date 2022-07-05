@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stdio_week_6/constants/assets_icon.dart';
 
 List<Widget> getRating(double rating, {double height = 16}) {
   int start = rating.round();
@@ -7,7 +8,7 @@ List<Widget> getRating(double rating, {double height = 16}) {
     (_) => Padding(
       padding: const EdgeInsets.all(2),
       child: Image.asset(
-        'assets/icons/star.png',
+      AssetsIcon.star,
         height: height,
       ),
     ),
@@ -17,7 +18,7 @@ List<Widget> getRating(double rating, {double height = 16}) {
     (_) => Padding(
       padding: const EdgeInsets.all(2),
       child: Image.asset(
-        'assets/icons/star_grey.png',
+        AssetsIcon.greyStar,
         height: height,
       ),
     ),

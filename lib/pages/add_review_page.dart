@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:stdio_week_6/blocs/loading_bloc.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/build_text_form_field.dart';
+import 'package:stdio_week_6/helper/hide_keyboard.dart';
 import 'package:stdio_week_6/helper/show_snackbar.dart';
 import 'package:stdio_week_6/models/review.dart';
 import 'package:stdio_week_6/models/user.dart';
@@ -44,84 +45,91 @@ class _AddReviewPageState extends State<AddReviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              ReviewPageBar(
-                  hotelName: widget.hotelName,
-                  ratedQuantity: widget.ratedQuantity,
-                  onTap: () {},
-                  isAddReviewPage: true),
-              Expanded(
-                  child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(32),
-                      child: Row(
-                        children: const [
-                          Expanded(
-                              child: Text(
-                            'Rating',
-                            textAlign: TextAlign.center,
-                            style: MyFont.blackHeading,
-                          ))
-                        ],
+      body: GestureDetector(
+        onTap: () {
+          hideKeyboard(context: context);
+        },
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: [
+                ReviewPageBar(
+                    hotelName: widget.hotelName,
+                    ratedQuantity: widget.ratedQuantity,
+                    onTap: () {},
+                    isAddReviewPage: true),
+                Expanded(
+                    child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(32),
+                        child: Row(
+                          children: const [
+                            Expanded(
+                                child: Text(
+                              'Rating',
+                              textAlign: TextAlign.center,
+                              style: MyFont.blackHeading,
+                            ))
+                          ],
+                        ),
                       ),
-                    ),
-                    RatingBar.builder(
-                        itemBuilder: (context, _) =>
-                            const Icon(Icons.star, color: Colors.amber),
-                        onRatingUpdate: (value) => rating = value),
-                    const SizedBox(height: 32),
-                    buildTextFormFeild(
-                        controller: _contentController,
-                        title: 'Content',
-                        type: TextInputType.multiline),
-                  ],
-                ),
-              )),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32),
-                child: StreamBuilder<bool>(
-                    stream: _loadingBloc.stream,
-                    initialData: false,
-                    builder: (context, snapshot) {
-                      final isLoading = snapshot.data!;
-                      return CustomButton(
-                        text: 'Add',
-                        onPress: isLoading
-                            ? null
-                            : () async {
-                                if (rating == 0) {
+                      RatingBar.builder(
+                          itemBuilder: (context, _) =>
+                              const Icon(Icons.star, color: Colors.amber),
+                          onRatingUpdate: (value) => rating = value),
+                      const SizedBox(height: 32),
+                      BuildTextFormFeild(
+                          controller: _contentController,
+                          title: 'Content',
+                          type: TextInputType.multiline),
+                    ],
+                  ),
+                )),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 32),
+                  child: StreamBuilder<bool>(
+                      stream: _loadingBloc.stream,
+                      initialData: false,
+                      builder: (context, snapshot) {
+                        final isLoading = snapshot.data!;
+                        return CustomButton(
+                          text: 'Add',
+                          onPress: isLoading
+                              ? null
+                              : () async {
+                                  hideKeyboard(context: context);
+                                  if (rating == 0) {
+                                    _loadingBloc.toggleState();
+                                    showSnackBar(
+                                        context: context,
+                                        content: 'Rate is required!',
+                                        error: true);
+                                    _loadingBloc.toggleState();
+                                    return;
+                                  }
                                   _loadingBloc.toggleState();
-                                  showSnackBar(
+                                  await HotelFirestore().addReview(
                                       context: context,
-                                      content: 'Rate is required!',
-                                      error: true);
-                                  _loadingBloc.toggleState();
-                                  return;
-                                }
-                                _loadingBloc.toggleState();
-                                await HotelFirestore().addReview(
-                                    context: context,
-                                    hotelId: widget.hotelId,
-                                    review: Review(
-                                        content: _contentController.text.trim(),
-                                        rating: rating,
-                                        uid: currenUser.id));
-                                await Future.delayed(
-                                    const Duration(seconds: 1));
-                                if (!mounted) return;
-                                Navigator.of(context).pop('pop');
-                              },
-                        color: Colors.deepPurple,
-                      );
-                    }),
-              )
-            ],
+                                      hotelId: widget.hotelId,
+                                      review: Review(
+                                          content:
+                                              _contentController.text.trim(),
+                                          rating: rating,
+                                          uid: currenUser.id));
+                                  await Future.delayed(
+                                      const Duration(seconds: 1));
+                                  if (!mounted) return;
+                                  Navigator.of(context).pop('pop');
+                                },
+                          color: Colors.deepPurple,
+                        );
+                      }),
+                )
+              ],
+            ),
           ),
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 
@@ -24,7 +25,7 @@ class DottedImage extends StatelessWidget {
               child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset('assets/icons/gallery.png', height: 24),
+              Image.asset(AssetsIcon.gallery, height: 24),
               const SizedBox(height: 5),
               Text(
                 'Add image',

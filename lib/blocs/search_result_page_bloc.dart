@@ -11,7 +11,7 @@ class SearchResultPageBloc {
     hotels = await HotelFirestore().getAllHotel();
     final List<Hotel> result = hotels
         .where(
-            (hotel) => hotel.name.toLowerCase().contains(keywork.toLowerCase()))
+            (hotel) => hotel.name.toLowerCase().contains(keywork.trim().toLowerCase()))
         .toList();
     _controller.sink.add(result);
   }

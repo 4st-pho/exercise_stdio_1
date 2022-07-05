@@ -3,6 +3,7 @@ import 'dart:ui' as ui;
 import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/models/location.dart';
 
 class MapBloc {
@@ -24,8 +25,7 @@ class MapBloc {
   Stream<Set<Marker>> get stream => _controller.stream;
 
   void init(Location location) async {
-    customMarker =
-        (await getBytesFromAsset(path: 'assets/icons/pin.png', width: 150))!;
+    customMarker = (await getBytesFromAsset(path: AssetsIcon.pin, width: 150))!;
     marker.add(Marker(
         markerId: const MarkerId('01'),
         icon: BitmapDescriptor.fromBytes(customMarker),

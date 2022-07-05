@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stdio_week_6/blocs/map_bloc.dart';
+import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/json/map_json.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/models/location.dart';
@@ -41,7 +42,7 @@ class _MapPageState extends State<MapPage> {
         elevation: 0,
         leading: IconButton(
             icon: Image.asset(
-              'assets/icons/arow_black.png',
+              AssetsIcon.arrowBack,
               height: 24,
             ),
             onPressed: () {

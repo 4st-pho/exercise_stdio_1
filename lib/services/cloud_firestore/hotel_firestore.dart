@@ -179,13 +179,13 @@ class HotelFirestore {
     updateHotelRating(hotelId);
   }
 
-  void likeReview({required String hotelId, required Review review}) {
+  void likeReview({required String hotelId, required Review review}) async{
     final docHotel = _firestore.collection(CollectionPath.hotels).doc(hotelId);
-    docHotel.update({
+    await docHotel.update({
       'reviews': FieldValue.arrayRemove([review.toJson()])
     });
     review.like = review.like + 1;
-    docHotel.update({
+    await docHotel.update({
       'reviews': FieldValue.arrayUnion([review.toJson()])
     });
   }

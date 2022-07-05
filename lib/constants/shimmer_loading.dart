@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:stdio_week_6/widgets/bookmark_card_shimmer.dart';
 import 'package:stdio_week_6/widgets/discover_card_shimmer.dart';
 import 'package:stdio_week_6/widgets/hotel_card_shimmer.dart';
 import 'package:stdio_week_6/widgets/hotel_review_shimmer.dart';
@@ -11,6 +12,14 @@ class ShimmerLoading {
       HotelCardShimmer(),
       HotelCardShimmer(),
       HotelCardShimmer(),
+    ],
+  );
+  static final listBookmarkCard = ListView(
+    children: const [
+      BookmarkCardShimmer(),
+      BookmarkCardShimmer(),
+      BookmarkCardShimmer(),
+      BookmarkCardShimmer(),
     ],
   );
   static final listDiscoverCard = ListView(

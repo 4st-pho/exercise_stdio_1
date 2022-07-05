@@ -7,8 +7,9 @@ import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/animation/custom_page_transition.dart';
 import 'package:stdio_week_6/helper/build_password_text_form_field.dart';
 import 'package:stdio_week_6/helper/build_text_form_field.dart';
+import 'package:stdio_week_6/helper/hide_keyboard.dart';
 import 'package:stdio_week_6/pages/sign_up_page.dart';
-import 'package:stdio_week_6/pages/widgets/reset_password_page.dart';
+import 'package:stdio_week_6/pages/reset_password_page.dart';
 import 'package:stdio_week_6/services/firebase_auth/firebase_auth_methods.dart';
 import 'package:stdio_week_6/widgets/custom_button.dart';
 import 'package:stdio_week_6/widgets/logo.dart';
@@ -48,8 +49,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: GestureDetector(
         onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
-          if (!currentFocus.hasPrimaryFocus) currentFocus.unfocus();
+         hideKeyboard(context: context);
         },
         child: SingleChildScrollView(
           reverse: true,
@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Form(
                       key: _formKey,
                       child: Column(children: [
-                        buildTextFormFeild(
+                        BuildTextFormFeild(
                             controller: _emailController,
                             title: 'Email',
                             type: TextInputType.emailAddress,
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                                 );
                               }
                               final isPasswordVisible = snapshot.data!;
-                              return buildPasswordTextFormField(
+                              return BuildPasswordTextFormField(
                                   controller: _passwordController,
                                   title: 'Password',
                                   isPasswordVisible: isPasswordVisible,
@@ -111,6 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                                 onPress: isLoading
                                     ? null
                                     : () async {
+                                       hideKeyboard(context: context);
                                         _loadingBloc.toggleState();
                                         if (!_formKey.currentState!
                                             .validate()) {
@@ -133,7 +134,9 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 8),
               InkWell(
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ResetPasswordPage(initEmail: _emailController.text,))),
+                    builder: (context) => ResetPasswordPage(
+                          initEmail: _emailController.text,
+                        ))),
                 child: const Text(
                   'Forgot password?',
                   style: MyFont.blueSubtitle,
