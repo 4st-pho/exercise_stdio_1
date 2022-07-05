@@ -54,40 +54,8 @@ class _AddReviewPageState extends State<AddReviewPage> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                ReviewPageBar(
-                    hotelName: widget.hotelName,
-                    ratedQuantity: widget.ratedQuantity,
-                    onTap: () {},
-                    isAddReviewPage: true),
-                Expanded(
-                    child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(32),
-                        child: Row(
-                          children: const [
-                            Expanded(
-                                child: Text(
-                              'Rating',
-                              textAlign: TextAlign.center,
-                              style: MyFont.blackHeading,
-                            ))
-                          ],
-                        ),
-                      ),
-                      RatingBar.builder(
-                          itemBuilder: (context, _) =>
-                              const Icon(Icons.star, color: Colors.amber),
-                          onRatingUpdate: (value) => rating = value),
-                      const SizedBox(height: 32),
-                      BuildTextFormFeild(
-                          controller: _contentController,
-                          title: 'Content',
-                          type: TextInputType.multiline),
-                    ],
-                  ),
-                )),
+                _buildReviewPageBar(),
+                _buildRatingInput(),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 32),
                   child: StreamBuilder<bool>(
@@ -134,5 +102,46 @@ class _AddReviewPageState extends State<AddReviewPage> {
         ),
       ),
     );
+  }
+
+  Expanded _buildRatingInput() {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(32),
+              child: Row(
+                children: const [
+                  Expanded(
+                      child: Text(
+                    'Rating',
+                    textAlign: TextAlign.center,
+                    style: MyFont.blackHeading,
+                  ))
+                ],
+              ),
+            ),
+            RatingBar.builder(
+                itemBuilder: (context, _) =>
+                    const Icon(Icons.star, color: Colors.amber),
+                onRatingUpdate: (value) => rating = value),
+            const SizedBox(height: 32),
+            BuildTextFormFeild(
+                controller: _contentController,
+                title: 'Content',
+                type: TextInputType.multiline),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ReviewPageBar _buildReviewPageBar() {
+    return ReviewPageBar(
+        hotelName: widget.hotelName,
+        ratedQuantity: widget.ratedQuantity,
+        onTap: () {},
+        isAddReviewPage: true);
   }
 }

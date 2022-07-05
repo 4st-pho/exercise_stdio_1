@@ -49,8 +49,8 @@ class BuildTextFormFeild extends StatelessWidget {
             if (value.length < 5) {
               return 'Do not less than 5 characters.';
             }
-            if (value.length > 150) {
-              return 'Do not exceed 150 characters when entering.';
+            if (value.length > 300) {
+              return 'Do not exceed 300 characters when entering.';
             }
             return null;
           },

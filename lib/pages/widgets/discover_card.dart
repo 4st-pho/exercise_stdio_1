@@ -23,15 +23,12 @@ class DiscoverCard extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(32),
-            child: Hero(
-              tag: hotel.id,
-              child: FadeInImage.assetNetwork(
-                image: hotel.imagePath,
-                width: screenWidth / 2,
-                height: double.infinity,
-                fit: BoxFit.cover,
-                placeholder: AssetsImage.fadeImage,
-              ),
+            child: FadeInImage.assetNetwork(
+              image: hotel.imagePath,
+              width: screenWidth / 2,
+              height: double.infinity,
+              fit: BoxFit.cover,
+              placeholder: AssetsImage.fadeImage,
             ),
           ),
           Container(

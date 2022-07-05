@@ -32,23 +32,7 @@ class _MapPageState extends State<MapPage> {
     _mapBloc.init(widget.location);
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: const Text(
-          'Hotel Address',
-          style: MyFont.blackHeading,
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-            icon: Image.asset(
-              AssetsIcon.arrowBack,
-              height: 24,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            }),
-      ),
+      appBar: _buildAppBar(context),
       body: StreamBuilder<Set<Marker>>(
           stream: _mapBloc.stream,
           builder: (context, snapshot) {
@@ -69,6 +53,26 @@ class _MapPageState extends State<MapPage> {
                       widget.location.longitude,
                     ),
                     zoom: 16));
+          }),
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: const Text(
+        'Hotel Address',
+        style: MyFont.blackHeading,
+      ),
+      centerTitle: true,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      leading: IconButton(
+          icon: Image.asset(
+            AssetsIcon.arrowBack,
+            height: 24,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
           }),
     );
   }

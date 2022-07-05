@@ -4,7 +4,7 @@ import 'package:stdio_week_6/models/review.dart';
 class ReviewPageBloc {
   List<Review> reviews = [];
   List<Review> reviewsFilter = [];
-  final _controller = StreamController<List<Review>>();
+  final _controller = StreamController<List<Review>>.broadcast();
   Stream<List<Review>> get stream => _controller.stream;
   void init(List<Review> reviewsParam) {
     reviews = reviewsParam;

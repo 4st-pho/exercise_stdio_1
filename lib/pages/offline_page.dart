@@ -14,48 +14,50 @@ class OfflinePage extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-            child: Center(
-                child: Image.asset(
-          AssetsImage.noInternet,
-          width: double.infinity,
-          height: double.infinity,
-          fit: BoxFit.cover,
-        ))),
-        Expanded(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              const Text(
-                'No conection',
-                style: MyFont.blueHeading,
-              ),
-              const SizedBox(
-                height: 36,
-              ),
-              const Text(
-                'No internet connection found. Check your connection or try again.',
-                style: MyFont.blackTitle,
-                textAlign: TextAlign.center,
-              ),
-              const Spacer(),
-              Row(
-                children: [
-                  const Spacer(),
-                  Expanded(
-                    flex: 2,
-                    child: CustomButton(
-                        text: 'Retry',
-                        onPress: () async =>
-                            await netWorkService.checkNetwork()),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-              const Spacer(),
-            ],
+          child: Center(
+            child: Image.asset(
+              AssetsImage.noInternet,
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
+            ),
           ),
-        )),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                const Text(
+                  'No conection',
+                  style: MyFont.blueHeading,
+                ),
+                const SizedBox(height: 36),
+                const Text(
+                  'No internet connection found. Check your connection or try again.',
+                  style: MyFont.blackTitle,
+                  textAlign: TextAlign.center,
+                ),
+                const Spacer(),
+                Row(
+                  children: [
+                    const Spacer(),
+                    Expanded(
+                      flex: 2,
+                      child: CustomButton(
+                          text: 'Retry',
+                          onPress: () async =>
+                              await netWorkService.checkNetwork()),
+                    ),
+                    const Spacer(),
+                  ],
+                ),
+                const Spacer(),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }

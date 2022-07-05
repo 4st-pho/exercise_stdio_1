@@ -2,7 +2,7 @@ import 'dart:async';
 
 class SelectRatingBloc {
   double rating = -1;
-  final _controller = StreamController<double>();
+  final _controller = StreamController<double>.broadcast();
   Stream<double> get stream => _controller.stream;
   void chooseRating(double ratingParam) {
     rating = ratingParam;

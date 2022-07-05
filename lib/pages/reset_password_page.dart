@@ -40,17 +40,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         hideKeyboard(context: context);
       },
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: IconButton(
-            icon: Image.asset(
-              AssetsIcon.arrowBack,
-              height: 24,
-            ),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-        ),
+        appBar: _buildAppBar(context),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Column(
@@ -72,31 +62,45 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   type: TextInputType.emailAddress),
               const Flexible(child: SizedBox(height: 16)),
               StreamBuilder<bool>(
-                  stream: _loadingBloc.stream,
-                  initialData: false,
-                  builder: (context, snapshot) {
-                    final isloading = snapshot.data!;
-                    return CustomButton(
-                        text: 'Send instructions',
-                        onPress: isloading
-                            ? null
-                            : () {
-                                FocusScopeNode currentFocus =
-                                    FocusScope.of(context);
-                                if (!currentFocus.hasPrimaryFocus) {
-                                  currentFocus.unfocus();
-                                }
-                                _loadingBloc.toggleState();
-                                FirebaseAuthMethods().resetPassword(
-                                    context: context,
-                                    email: _emailController.text);
-                                _loadingBloc.toggleState();
-                              });
-                  })
+                stream: _loadingBloc.stream,
+                initialData: false,
+                builder: (context, snapshot) {
+                  final isloading = snapshot.data!;
+                  return CustomButton(
+                    text: 'Send instructions',
+                    onPress: isloading
+                        ? null
+                        : () {
+                            FocusScopeNode currentFocus =
+                                FocusScope.of(context);
+                            if (!currentFocus.hasPrimaryFocus) {
+                              currentFocus.unfocus();
+                            }
+                            _loadingBloc.toggleState();
+                            FirebaseAuthMethods().resetPassword(
+                                context: context, email: _emailController.text);
+                          },
+                  );
+                },
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  AppBar _buildAppBar(BuildContext context) {
+    return AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: Image.asset(
+            AssetsIcon.arrowBack,
+            height: 24,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      );
   }
 }

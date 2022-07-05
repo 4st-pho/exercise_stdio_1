@@ -110,29 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Positioned(
               top: 100,
               left: screenWidth / 2 - 56,
-              child: StreamBuilder<File?>(
-                  stream: _changeImageBloc.stream,
-                  initialData: null,
-                  builder: (context, snapshot) {
-                    final file = snapshot.data;
-                    imageFIle = file;
-
-                    return CircleAvatar(
-                      radius: 56,
-                      backgroundColor: MyColor.background,
-                      child: CircleAvatar(
-                        radius: 52,
-                        backgroundColor: MyColor.primaryGrey,
-                        child: file == null
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(52),
-                                child: Image.network(currenUser.avatar))
-                            : ClipRRect(
-                                borderRadius: BorderRadius.circular(52),
-                                child: Image.file(file)),
-                      ),
-                    );
-                  }),
+              child: _buildPickImage(),
             ),
             Positioned(
               top: 170,
@@ -157,5 +135,42 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  StreamBuilder<File?> _buildPickImage() {
+    return StreamBuilder<File?>(
+        stream: _changeImageBloc.stream,
+        initialData: null,
+        builder: (context, snapshot) {
+          final file = snapshot.data;
+          imageFIle = file;
+
+          return CircleAvatar(
+            radius: 56,
+            backgroundColor: MyColor.background,
+            child: CircleAvatar(
+              radius: 52,
+              backgroundColor: MyColor.primaryGrey,
+              child: file == null
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(52),
+                      child: Image.network(
+                        currenUser.avatar,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                  : ClipRRect(
+                      borderRadius: BorderRadius.circular(52),
+                      child: Image.file(
+                        file,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      )),
+            ),
+          );
+        });
   }
 }

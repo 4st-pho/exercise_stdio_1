@@ -19,8 +19,8 @@ class SearchBloc {
   }
 
   void query(String content) {
-    keywork = content;
-    content = content.toLowerCase();
+    keywork = content.trim();
+    content = content.toLowerCase().trim();
     debounce.run(() {
       final List<Hotel> result = hotels
           .where((hotel) => hotel.name.toLowerCase().contains(content))
@@ -48,10 +48,10 @@ class SearchBloc {
 
   void goResultPage(BuildContext context, {String suggest = ''}) {
     if (suggest.isNotEmpty) {
-      keywork = suggest;
+      keywork = suggest.trim();
     }
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => SearchResultPage(keywork: keywork)));
+        builder: (context) => SearchResultPage(keywork: keywork.trim())));
   }
 
   SearchBloc() {

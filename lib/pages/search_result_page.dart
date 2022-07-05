@@ -47,93 +47,101 @@ class _SearchResultPageState extends State<SearchResultPage>
     final networkStatus = context.watch<NetworkStatus>();
     _searchResultPageBloc.init(widget.keywork);
     return StreamBuilder<bool>(
-        stream: _switchListTypeBloc.stream,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const CustomLoading();
-          }
-          final isGrid = snapshot.data!;
+      stream: _switchListTypeBloc.stream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const CustomLoading();
+        }
+        final isGrid = snapshot.data!;
 
-          return Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                  icon: Image.asset(
-                    AssetsIcon.arrowBack,
-                    height: 24,
+        return Scaffold(
+          appBar: _buildAppBar(context, isGrid),
+          body: StreamBuilder<List<Hotel>>(
+            stream: _searchResultPageBloc.stream,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return const CustomLoading();
+              }
+              final hotels = snapshot.data!;
+              if (networkStatus == NetworkStatus.offline) {
+                return const OfflinePage();
+              }
+              if (hotels.isEmpty) {
+                return const Center(
+                  child: Text(
+                    'Not found!',
+                    style: MyFont.blackTitle,
                   ),
-                  onPressed: () => Navigator.of(context).pop()),
-              title: Text(
-                'Results for "${widget.keywork.trim()}"',
-                style: MyFont.blackTitle,
-              ),
-              actions: [
-                Align(
-                  child: InkWell(
-                    onTap: () {
-                      if (isGrid) {
-                        _animationController.reverse();
-                        _switchListTypeBloc.toggleListType();
-                      } else {
-                        _animationController.forward();
-                        _switchListTypeBloc.toggleListType();
-                      }
-                    },
-                    child: AnimatedIcon(
-                        icon: AnimatedIcons.list_view,
-                        progress: _animationController),
-                  ),
-                ),
-                const SizedBox(width: 18)
-              ],
-              foregroundColor: MyColor.black,
-              backgroundColor: MyColor.background,
-              elevation: 0,
-              centerTitle: true,
+                );
+              }
+              return _buildContent(hotels, isGrid);
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  AppBar _buildAppBar(BuildContext context, bool isGrid) {
+    return AppBar(
+      leading: IconButton(
+          icon: Image.asset(
+            AssetsIcon.arrowBack,
+            height: 24,
+          ),
+          onPressed: () => Navigator.of(context).pop()),
+      title: Text(
+        'Results for "${widget.keywork.trim()}"',
+        style: MyFont.blackTitle,
+      ),
+      actions: [
+        Align(
+          child: InkWell(
+            onTap: () {
+              if (isGrid) {
+                _animationController.reverse();
+                _switchListTypeBloc.toggleListType();
+              } else {
+                _animationController.forward();
+                _switchListTypeBloc.toggleListType();
+              }
+            },
+            child: AnimatedIcon(
+                icon: AnimatedIcons.list_view, progress: _animationController),
+          ),
+        ),
+        const SizedBox(width: 18)
+      ],
+      foregroundColor: MyColor.black,
+      backgroundColor: MyColor.background,
+      elevation: 0,
+      centerTitle: true,
+    );
+  }
+
+  GridView _buildContent(List<Hotel> hotels, bool isGrid) {
+    return GridView.builder(
+        itemCount: hotels.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: isGrid ? 2 : 1,
+          childAspectRatio: isGrid ? 2 / 3 : 3 / 2,
+        ),
+        itemBuilder: (context, index) {
+          final hotel = hotels[index];
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => HotelDetailPage(hotel: hotel)));
+              },
+              child: SearchResutItem(
+                  name: hotel.name,
+                  isGrid: _switchListTypeBloc.isGrid,
+                  address: hotel.address,
+                  rating: hotel.rating,
+                  imagePath: hotel.imagePath),
             ),
-            body: StreamBuilder<List<Hotel>>(
-                stream: _searchResultPageBloc.stream,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const CustomLoading();
-                  }
-                  final hotels = snapshot.data!;
-                  if (networkStatus == NetworkStatus.offline) {
-                    return const OfflinePage();
-                  }
-                  if (hotels.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'Not found!',
-                        style: MyFont.blackTitle,
-                      ),
-                    );
-                  }
-                  return GridView.builder(
-                      itemCount: hotels.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: isGrid ? 2 : 1,
-                        childAspectRatio: isGrid ? 2 / 3 : 3 / 2,
-                      ),
-                      itemBuilder: (context, index) {
-                        final hotel = hotels[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      HotelDetailPage(hotel: hotel)));
-                            },
-                            child: SearchResutItem(
-                                name: hotel.name,
-                                isGrid: _switchListTypeBloc.isGrid,
-                                address: hotel.address,
-                                rating: hotel.rating,
-                                imagePath: hotel.imagePath),
-                          ),
-                        );
-                      });
-                }),
           );
         });
   }

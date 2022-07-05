@@ -25,7 +25,6 @@ class TitleReview extends StatelessWidget {
         InkWell(
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ReviewPage(
-                    reviews: reviews,
                     hotelName: hotelName,
                     hotelId: hotelId,
                   ))),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
+import 'package:stdio_week_6/constants/my_decoration.dart';
 import 'package:stdio_week_6/models/hotel.dart';
 import 'package:stdio_week_6/pages/widgets/review_hotel.dart';
 import 'package:stdio_week_6/pages/widgets/description.dart';
@@ -15,59 +16,7 @@ class HotelDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(slivers: <Widget>[
-        SliverAppBar(
-          pinned: true,
-          automaticallyImplyLeading: false,
-          elevation: 0,
-          title: DetailHotelBar(hotel: hotel),
-          toolbarHeight: 60,
-          backgroundColor: MyColor.grey,
-          expandedHeight: 300,
-          flexibleSpace: FlexibleSpaceBar(
-            background: Stack(
-              children: [
-                Hero(
-                  tag: hotel.id,
-                  child: Image.network(
-                    hotel.imagePath,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: <Color>[
-                      Colors.black.withOpacity(0.3),
-                      Colors.black.withOpacity(0.3),
-                      Colors.transparent,
-                      Colors.transparent,
-                      Colors.transparent,
-                      Colors.transparent,
-                      Colors.transparent,
-                    ],
-                    tileMode: TileMode.mirror,
-                  )),
-                ),
-              ],
-            ),
-          ),
-          bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(32),
-              child: Container(
-                width: double.infinity,
-                height: 32,
-                decoration: const BoxDecoration(
-                    color: MyColor.background,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(32),
-                      topRight: Radius.circular(32),
-                    )),
-              )),
-        ),
+        _buildSliverAppBar(),
         SliverToBoxAdapter(
           child: Padding(
             padding: const EdgeInsets.only(left: 16, right: 16),
@@ -102,5 +51,42 @@ class HotelDetailPage extends StatelessWidget {
         ),
       ]),
     );
+  }
+
+  SliverAppBar _buildSliverAppBar() {
+    return SliverAppBar(
+        pinned: true,
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        title: DetailHotelBar(hotel: hotel),
+        toolbarHeight: 60,
+        backgroundColor: MyColor.grey,
+        expandedHeight: 300,
+        flexibleSpace: FlexibleSpaceBar(
+          background: Stack(
+            children: [
+              Image.network(
+                hotel.imagePath,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
+              ),
+              Container(decoration: MyDecoration.boxDecoration),
+            ],
+          ),
+        ),
+        bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(32),
+            child: Container(
+              width: double.infinity,
+              height: 32,
+              decoration: const BoxDecoration(
+                  color: MyColor.background,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    topRight: Radius.circular(32),
+                  )),
+            )),
+      );
   }
 }

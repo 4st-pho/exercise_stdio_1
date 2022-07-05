@@ -31,6 +31,7 @@ class FirebaseAuthMethods {
       Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
       showSnackBar(context: context, content: e.message!, error: true);
+      Navigator.of(context).pop();
     }
   }
 

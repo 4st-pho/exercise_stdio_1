@@ -89,33 +89,38 @@ class _MainPageState extends State<MainPage> {
                 onTap: (pageIndex) {
                   _bottomBarBloc.selectPage(pageIndex);
                 },
-                items: [
-                  buildBottomNavigationBarItem(
-                      index: 0,
-                      curentIndex: currentIndex,
-                      icon: AssetsIcon.home,
-                      activeIcon: AssetsIcon.homeActive,
-                      label: 'Home'),
-                  buildBottomNavigationBarItem(
-                      index: 1,
-                      curentIndex: currentIndex,
-                      icon: AssetsIcon.search,
-                      activeIcon: AssetsIcon.searchActive,
-                      label: 'Discover'),
-                  buildBottomNavigationBarItem(
-                      index: 2,
-                      curentIndex: currentIndex,
-                      icon: AssetsIcon.book,
-                      activeIcon: AssetsIcon.bookActive,
-                      label: 'Bookmark'),
-                  buildBottomNavigationBarItem(
-                      index: 3,
-                      curentIndex: currentIndex,
-                      icon: AssetsIcon.user,
-                      activeIcon: AssetsIcon.userActive,
-                      label: 'Profile'),
-                ],
+                items: _buildListBottomNavigationBarItem(currentIndex),
               ));
         });
+  }
+
+  List<BottomNavigationBarItem> _buildListBottomNavigationBarItem(
+      int currentIndex) {
+    return [
+      buildBottomNavigationBarItem(
+          index: 0,
+          curentIndex: currentIndex,
+          icon: AssetsIcon.home,
+          activeIcon: AssetsIcon.homeActive,
+          label: 'Home'),
+      buildBottomNavigationBarItem(
+          index: 1,
+          curentIndex: currentIndex,
+          icon: AssetsIcon.search,
+          activeIcon: AssetsIcon.searchActive,
+          label: 'Discover'),
+      buildBottomNavigationBarItem(
+          index: 2,
+          curentIndex: currentIndex,
+          icon: AssetsIcon.book,
+          activeIcon: AssetsIcon.bookActive,
+          label: 'Bookmark'),
+      buildBottomNavigationBarItem(
+          index: 3,
+          curentIndex: currentIndex,
+          icon: AssetsIcon.user,
+          activeIcon: AssetsIcon.userActive,
+          label: 'Profile'),
+    ];
   }
 }
