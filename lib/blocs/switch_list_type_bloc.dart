@@ -4,9 +4,6 @@ class SwitchListTypeBloc {
   bool isGrid = false;
   final _controller = StreamController<bool>();
   Stream<bool> get stream => _controller.stream;
-  void init() {
-    _controller.sink.add(isGrid);
-  }
 
   void toggleListType() {
     isGrid = !isGrid;
@@ -14,7 +11,7 @@ class SwitchListTypeBloc {
   }
 
   SwitchListTypeBloc() {
-    init();
+    _controller.sink.add(isGrid);
   }
   void dispose() {
     _controller.close();

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:stdio_week_6/constants/assests_image.dart';
+import 'package:stdio_week_6/constants/assets_image.dart';
 
 class Logo extends StatelessWidget {
   const Logo({Key? key}) : super(key: key);

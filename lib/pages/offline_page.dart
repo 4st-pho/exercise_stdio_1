@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:stdio_week_6/constants/assests_image.dart';
+import 'package:stdio_week_6/constants/assets_image.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/services/network/network_service.dart';
 import 'package:stdio_week_6/widgets/custom_button.dart';
@@ -30,12 +31,12 @@ class OfflinePage extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 const Text(
-                  'No conection',
+                 ConstString.noConection,
                   style: MyFont.blueHeading,
                 ),
                 const SizedBox(height: 36),
                 const Text(
-                  'No internet connection found. Check your connection or try again.',
+                  ConstString.noInternetTryAgain,
                   style: MyFont.blackTitle,
                   textAlign: TextAlign.center,
                 ),
@@ -46,8 +47,8 @@ class OfflinePage extends StatelessWidget {
                     Expanded(
                       flex: 2,
                       child: CustomButton(
-                          text: 'Retry',
-                          onPress: () async =>
+                          text: ConstString.retry,
+                          onPressed: () async =>
                               await netWorkService.checkNetwork()),
                     ),
                     const Spacer(),

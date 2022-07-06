@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/constants/my_decoration.dart';
 
@@ -28,13 +29,13 @@ class ProfileTextFormFeildName extends StatelessWidget {
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please enter some text';
+          return ConstString.pleaseEnterSomeText;
         }
         if (value.length < 2) {
-          return 'Do not less than 2 characters.';
+          return ConstString.doNotLessThan2Characters;
         }
         if (value.length > 20) {
-          return 'Do not exceed 20 characters when entering.';
+          return ConstString.doNotExceed20Characters;
         }
         return null;
       },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:stdio_week_6/blocs/map_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/json/map_json.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/models/location.dart';
@@ -60,7 +61,7 @@ class _MapPageState extends State<MapPage> {
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       title: const Text(
-        'Hotel Address',
+        ConstString.hotelAddress,
         style: MyFont.blackHeading,
       ),
       centerTitle: true,

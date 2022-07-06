@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/search_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/helper/hide_keyboard.dart';
 import 'package:stdio_week_6/models/hotel.dart';
@@ -48,21 +49,26 @@ class _SearchPageState extends State<SearchPage> {
                 _buildSearchBar(context),
                 const SizedBox(height: 12),
                 Expanded(
-                  child: StreamBuilder<List<Hotel>>(
-                      stream: _searchBloc.stream,
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return const SizedBox();
-                        }
-                        final data = snapshot.data!;
-                        return SearchItem(data: data, searchBloc: _searchBloc);
-                      }),
+                  child: _buildSearchResult(),
                 )
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  StreamBuilder<List<Hotel>> _buildSearchResult() {
+    return StreamBuilder<List<Hotel>>(
+      stream: _searchBloc.stream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const SizedBox();
+        }
+        final data = snapshot.data!;
+        return SearchItem(data: data, searchBloc: _searchBloc);
+      },
     );
   }
 
@@ -78,7 +84,7 @@ class _SearchPageState extends State<SearchPage> {
           const SizedBox(width: 16),
           Expanded(
             child: Hero(
-              tag: 'search',
+              tag: ConstString.search,
               child: Material(
                 color: MyColor.white,
                 elevation: 10,

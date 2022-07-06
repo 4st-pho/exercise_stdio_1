@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/bookmark_bloc.dart';
+import 'package:stdio_week_6/constants/assets_image.dart';
 import 'package:stdio_week_6/constants/shimmer_loading.dart';
 import 'package:stdio_week_6/models/hotel.dart';
 import 'package:stdio_week_6/pages/widgets/hotel_card.dart';
@@ -38,6 +39,13 @@ class _BookmarkPageState extends State<BookmarkPage> {
                   return ShimmerLoading.listBookmarkCard;
                 }
                 final hotels = snap.data!;
+                if (hotels.isEmpty) {
+                  return Center(
+                      child: Image.asset(
+                    AssetsImage.emptyList,
+                    fit: BoxFit.contain,
+                  ));
+                }
                 return ListView.builder(
                   itemCount: hotels.length,
                   itemBuilder: (BuildContext context, int index) {

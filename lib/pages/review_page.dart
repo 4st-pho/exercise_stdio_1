@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stdio_week_6/blocs/review_page_bloc.dart';
 import 'package:stdio_week_6/blocs/select_rating_bloc.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/models/review.dart';
 import 'package:stdio_week_6/pages/add_review_page.dart';
 import 'package:stdio_week_6/pages/offline_page.dart';
@@ -39,46 +40,48 @@ class _ReviewPageState extends State<ReviewPage> {
     return Scaffold(
       body: networkStatus == NetworkStatus.offline
           ? const OfflinePage()
-          : StreamBuilder<List<Review>>(
-              initialData: const [],
-              stream: HotelFirestore().streamReviews(widget.hotelId),
+          : StreamBuilder<double>(
+              stream: _selectRatingBloc.stream,
+              initialData: -1,
               builder: (context, snapshot) {
-                final reviews = snapshot.data;
-                _reviewPageBloc.init(reviews ?? []);
-                return SafeArea(
-                  child: Column(
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 16),
-                          child: _buildReviewPageBar(context, reviews!.length)),
-                      StreamBuilder<double>(
-                          stream: _selectRatingBloc.stream,
-                          initialData: -1,
-                          builder: (context, snapshot) {
-                            final rating = snapshot.data!;
-                            return SizedBox(
+                final rating = snapshot.data!;
+                
+                return StreamBuilder<List<Review>>(
+                    initialData: const [],
+                    stream: HotelFirestore().streamReviews(widget.hotelId),
+                    builder: (context, snapshot) {
+                      final reviews = snapshot.data;
+                      _reviewPageBloc.init(reviews ?? [], rating);
+                      return SafeArea(
+                        child: Column(
+                          children: [
+                            Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 16),
+                                child: _buildReviewPageBar(
+                                    context, reviews!.length)),
+                            SizedBox(
                               height: 80,
-                              child: _buildRating(rating),
-                            );
-                          }),
-                      Expanded(
-                        child: StreamBuilder(
-                          stream: _reviewPageBloc.stream,
-                          initialData: reviews,
-                          builder:
-                              (BuildContext context, AsyncSnapshot snapshot) {
-                            final data = snapshot.data!;
-                            return FilterReview(
-                              reviews: data,
-                              hotelId: widget.hotelId,
-                            );
-                          },
+                              child: _buildSelectFilterRating(rating),
+                            ),
+                            Expanded(
+                              child: StreamBuilder(
+                                stream: _reviewPageBloc.stream,
+                                initialData: reviews,
+                                builder: (BuildContext context,
+                                    AsyncSnapshot snapshot) {
+                                  final data = snapshot.data!;
+                                  return FilterReview(
+                                    reviews: data,
+                                    hotelId: widget.hotelId,
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                );
+                      );
+                    });
               }),
     );
   }
@@ -101,15 +104,15 @@ class _ReviewPageState extends State<ReviewPage> {
     );
   }
 
-  ListView _buildRating(double rating) {
+  ListView _buildSelectFilterRating(double rating) {
     return ListView(
       scrollDirection: Axis.horizontal,
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: ChoiceChip(
-              label:
-                  Text('All', style: TextStyle(color: Colors.yellow.shade700)),
+              label: Text(ConstString.all,
+                  style: TextStyle(color: Colors.yellow.shade700)),
               selected: rating <= 0 ? true : false,
               selectedColor: Colors.deepPurple,
               onSelected: (value) {

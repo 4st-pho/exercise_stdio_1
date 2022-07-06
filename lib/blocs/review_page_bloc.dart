@@ -6,9 +6,10 @@ class ReviewPageBloc {
   List<Review> reviewsFilter = [];
   final _controller = StreamController<List<Review>>.broadcast();
   Stream<List<Review>> get stream => _controller.stream;
-  void init(List<Review> reviewsParam) {
+  void init(List<Review> reviewsParam, rating) {
     reviews = reviewsParam;
-    _controller.add(reviews); 
+    _controller.add(reviews);
+    filterRatingByReview(rating);
   }
 
   void filterRatingByReview(double rating) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/models/review.dart';
 import 'package:stdio_week_6/pages/add_review_page.dart';
@@ -21,7 +22,7 @@ class TitleReview extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text('Reviews', style: MyFont.blueTitle),
+        const Text(ConstString.reviews, style: MyFont.blueTitle),
         InkWell(
           onTap: () => Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ReviewPage(
@@ -37,7 +38,7 @@ class TitleReview extends StatelessWidget {
                           ratedQuantity: reviews.length))),
                   assetsIcon: AssetsIcon.add)
               : Text(
-                  'See more',
+                  ConstString.seeMore,
                   style: MyFont.blackText
                       .copyWith(decoration: TextDecoration.underline),
                 ),

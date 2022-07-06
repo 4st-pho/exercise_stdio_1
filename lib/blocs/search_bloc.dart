@@ -47,11 +47,13 @@ class SearchBloc {
   // }
 
   void goResultPage(BuildContext context, {String suggest = ''}) {
-    if (suggest.isNotEmpty) {
-      keywork = suggest.trim();
-    }
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => SearchResultPage(keywork: keywork.trim())));
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => SearchResultPage(
+          keywork: suggest.isNotEmpty ? suggest.trim() : keywork.trim(),
+        ),
+      ),
+    );
   }
 
   SearchBloc() {

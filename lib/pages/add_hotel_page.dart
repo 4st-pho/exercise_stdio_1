@@ -5,6 +5,7 @@ import 'package:stdio_week_6/blocs/change_image_bloc.dart';
 import 'package:stdio_week_6/blocs/loading_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
 import 'package:stdio_week_6/constants/collection_path.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/build_text_form_field.dart';
 import 'package:stdio_week_6/helper/hide_keyboard.dart';
@@ -82,7 +83,7 @@ class _AddHotelPageState extends State<AddHotelPage> {
                     Flexible(
                       flex: 4,
                       child: CustomOutlineButton(
-                          text: 'Cancel',
+                          text: ConstString.cancel,
                           onPress: () {
                             Navigator.of(context).pop();
                           }),
@@ -101,8 +102,8 @@ class _AddHotelPageState extends State<AddHotelPage> {
                         return Flexible(
                           flex: 8,
                           child: CustomButton(
-                            text: 'Done',
-                            onPress: loading
+                            text: ConstString.done,
+                            onPressed: loading
                                 ? null
                                 : () async {
                                     hideKeyboard(context: context);
@@ -113,10 +114,11 @@ class _AddHotelPageState extends State<AddHotelPage> {
                                     }
                                     String error = '';
                                     if (nameController.text.length > 40) {
-                                      error = 'Name exceeds 40 characters. ';
+                                      error =
+                                          ConstString.nameExceeds40Characters;
                                     }
                                     if (file == null) {
-                                      error += 'Image is required.';
+                                      error += ConstString.imageIsRequired;
                                     }
                                     if (error.isNotEmpty) {
                                       showSnackBar(
@@ -138,8 +140,8 @@ class _AddHotelPageState extends State<AddHotelPage> {
                                     if (!mounted) return;
                                     showSnackBar(
                                         context: context,
-                                        content: 'Add succesfully!',
-                                        title: "Add new hotel");
+                                        content: ConstString.addSuccesfully,
+                                        title: ConstString.addNewHotel);
                                     Navigator.of(context).pop();
                                   },
                           ),
@@ -158,6 +160,7 @@ class _AddHotelPageState extends State<AddHotelPage> {
 
   Column _buildPickImage() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text('Hotel image', style: MyFont.blackTitle),
         const SizedBox(height: 10),

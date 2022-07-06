@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/home_page_bloc.dart';
+import 'package:stdio_week_6/constants/assets_image.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/constants/shimmer_loading.dart';
 import 'package:stdio_week_6/models/hotel.dart';
@@ -41,15 +43,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return NestedScrollView(
       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-        return [
-          SliverAppBar(
-            elevation: 0,
-            title: HomeBar(context: context),
-            toolbarHeight: 80,
-            pinned: true,
-            backgroundColor: MyColor.background,
-          )
-        ];
+        return [_buildSliverAppBar(context)];
       },
       body: StreamBuilder<List<Hotel>>(
         stream: _homePageBloc.stream,
@@ -58,6 +52,13 @@ class _HomePageState extends State<HomePage> {
             return ShimmerLoading.listHotelCard;
           }
           List<Hotel> listHotel = snapshot.data!;
+          if (listHotel.isEmpty) {
+            return Center(
+                child: Image.asset(
+              AssetsImage.emptyList,
+              fit: BoxFit.contain,
+            ));
+          }
           return RefreshIndicator(
             onRefresh: () async => _homePageBloc.init(),
             child: ListView.builder(
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                   return _homePageBloc.hasMore
                       ? const HotelCardShimmer()
                       : const Text(
-                          'No more data to load!',
+                          ConstString.noMoreDataToLoad,
                           textAlign: TextAlign.center,
                         );
                 }
@@ -82,6 +83,16 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
+    );
+  }
+
+  SliverAppBar _buildSliverAppBar(BuildContext context) {
+    return SliverAppBar(
+      elevation: 0,
+      title: HomeBar(context: context),
+      toolbarHeight: 80,
+      pinned: true,
+      backgroundColor: MyColor.background,
     );
   }
 }

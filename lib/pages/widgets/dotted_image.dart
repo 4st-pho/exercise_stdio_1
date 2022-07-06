@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 
@@ -28,7 +29,7 @@ class DottedImage extends StatelessWidget {
               Image.asset(AssetsIcon.gallery, height: 24),
               const SizedBox(height: 5),
               Text(
-                'Add image',
+                ConstString.addImage,
                 style: MyFont.greySubtitle
                     .copyWith(decoration: TextDecoration.underline),
               )

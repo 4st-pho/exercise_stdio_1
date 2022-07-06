@@ -7,10 +7,6 @@ class HotelCardBloc {
   final _controller = StreamController<List<String>>();
   Stream<List<String>> get stream => _controller.stream;
 
-  void init() {
-    _controller.sink.add(currenUser.follow);
-  }
-
   void toggleSave(String id) {
     int index = currenUser.follow.indexWhere((element) => element == id);
     if (index >= 0) {
@@ -23,7 +19,7 @@ class HotelCardBloc {
   }
 
   HotelCardBloc() {
-    init();
+    _controller.sink.add(currenUser.follow);
   }
   void dispose() {
     _controller.close();

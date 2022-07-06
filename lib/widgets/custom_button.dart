@@ -6,13 +6,13 @@ class CustomButton extends StatelessWidget {
   final String text;
   final Color color;
   final double minWidth;
-  final VoidCallback? onPress;
+  final VoidCallback? onPressed;
   const CustomButton(
       {this.infiniti = true,
       this.color = MyColor.blue,
       required this.text,
       Key? key,
-      required this.onPress,
+      required this.onPressed,
       this.minWidth = 233})
       : super(key: key);
 
@@ -27,7 +27,7 @@ class CustomButton extends StatelessWidget {
           onPrimary: Colors.white,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)))),
-      onPressed: onPress,
+      onPressed: onPressed,
       child: Center(
         child: Text(text),
       ),

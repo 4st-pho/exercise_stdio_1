@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:stdio_week_6/blocs/search_result_page_bloc.dart';
 import 'package:stdio_week_6/blocs/switch_list_type_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/assets_image.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/models/hotel.dart';
@@ -67,12 +68,11 @@ class _SearchResultPageState extends State<SearchResultPage>
                 return const OfflinePage();
               }
               if (hotels.isEmpty) {
-                return const Center(
-                  child: Text(
-                    'Not found!',
-                    style: MyFont.blackTitle,
-                  ),
-                );
+                return Center(
+                    child: Image.asset(
+                  AssetsImage.noResultFound,
+                  fit: BoxFit.contain,
+                ));
               }
               return _buildContent(hotels, isGrid);
             },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stdio_week_6/blocs/bottom_appbar_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/models/user.dart';
 import 'package:stdio_week_6/pages/bookmark_page.dart';
@@ -102,25 +103,25 @@ class _MainPageState extends State<MainPage> {
           curentIndex: currentIndex,
           icon: AssetsIcon.home,
           activeIcon: AssetsIcon.homeActive,
-          label: 'Home'),
+          label: ConstString.home),
       buildBottomNavigationBarItem(
           index: 1,
           curentIndex: currentIndex,
           icon: AssetsIcon.search,
           activeIcon: AssetsIcon.searchActive,
-          label: 'Discover'),
+          label: ConstString.discover),
       buildBottomNavigationBarItem(
           index: 2,
           curentIndex: currentIndex,
           icon: AssetsIcon.book,
           activeIcon: AssetsIcon.bookActive,
-          label: 'Bookmark'),
+          label: ConstString.bookmark),
       buildBottomNavigationBarItem(
           index: 3,
           curentIndex: currentIndex,
           icon: AssetsIcon.user,
           activeIcon: AssetsIcon.userActive,
-          label: 'Profile'),
+          label: ConstString.profile),
     ];
   }
 }

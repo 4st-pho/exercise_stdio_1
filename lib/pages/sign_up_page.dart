@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/loading_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/build_password_text_form_field.dart';
 import 'package:stdio_week_6/helper/hide_keyboard.dart';
@@ -70,7 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         final isLoading = snapshot.data!;
                         return CustomButton(
                           text: 'Sign up',
-                          onPress: isLoading
+                          onPressed: isLoading
                               ? null
                               : () async {
                                   hideKeyboard(context: context);
@@ -131,9 +132,10 @@ class _SignUpPageState extends State<SignUpPage> {
         SizedBox(height: 40),
         Logo(),
         SizedBox(height: 92),
-        Text('Sign up comdote!', style: MyFont.blackHeading),
+        Text(ConstString.signUpComdote, style: MyFont.blackHeading),
         SizedBox(height: 4),
-        Text('Alive with your style of living!', style: MyFont.greySubtitle),
+        Text(ConstString.aliveWithYourStyleOfLiving,
+            style: MyFont.greySubtitle),
       ],
     );
   }
@@ -145,35 +147,35 @@ class _SignUpPageState extends State<SignUpPage> {
         children: [
           BuildTextFormFeild(
               controller: _emailController,
-              title: 'Email',
+              title: ConstString.email,
               type: TextInputType.emailAddress,
               showLabel: false),
           const SizedBox(height: 16),
           BuildPasswordTextFormField(
               controller: _passwordController,
-              title: 'Password',
+              title: ConstString.password,
               onValidate: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return ConstString.pleaseEnterSomeText;
                 }
                 if (value.length <= 7) {
-                  return 'Password must be more than 7 characters';
+                  return ConstString.passwordMustBeMoreThan7Characters;
                 }
                 return null;
               }),
           const SizedBox(height: 16),
           BuildPasswordTextFormField(
               controller: _confirmPasswordController,
-              title: 'Confirm password',
+              title: ConstString.confirmPassword,
               onValidate: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return ConstString.pleaseEnterSomeText;
                 }
                 if (value.length <= 7) {
-                  return 'Password must be more than 7 characters';
+                  return ConstString.passwordMustBeMoreThan7Characters;
                 }
                 if (value != _passwordController.text) {
-                  return 'Not the same as the password';
+                  return ConstString.notTheSameAsThePassword;
                 }
                 return null;
               }),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/current_user_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/models/user.dart';
 import 'package:stdio_week_6/pages/add_hotel_page.dart';
@@ -48,8 +49,8 @@ class _HomeBarState extends State<HomeBar> {
                     }),
                 RichText(
                     text: const TextSpan(style: MyFont.blackHeading, children: [
-                  TextSpan(text: 'Explore '),
-                  TextSpan(text: 'New Hotel', style: MyFont.blueHeading),
+                  TextSpan(text: ConstString.explore),
+                  TextSpan(text: ConstString.newHotel, style: MyFont.blueHeading),
                 ])),
               ],
             ),

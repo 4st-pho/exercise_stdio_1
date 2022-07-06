@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stdio_week_6/constants/assests_image.dart';
+import 'package:stdio_week_6/constants/assets_image.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/get_rating.dart';
 import 'package:stdio_week_6/models/hotel.dart';
@@ -38,10 +38,7 @@ class DiscoverCard extends StatelessWidget {
                 end: Alignment.bottomCenter,
                 colors: <Color>[
                   Colors.white.withOpacity(0.3),
-                  Colors.white.withOpacity(0.3),
                   Colors.transparent,
-                  Colors.transparent,
-                  Colors.black.withOpacity(0.3),
                   Colors.black.withOpacity(0.3),
                 ],
                 tileMode: TileMode.mirror,

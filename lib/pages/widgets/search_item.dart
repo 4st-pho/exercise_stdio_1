@@ -27,7 +27,7 @@ class SearchItem extends StatelessWidget {
           onTap: () => _searchBloc.goResultPage(context, suggest: hotel.name),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(children: [
+            child: Row(mainAxisSize: MainAxisSize.max, children: [
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),

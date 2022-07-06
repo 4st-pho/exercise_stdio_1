@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/loading_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/build_text_form_field.dart';
 import 'package:stdio_week_6/helper/hide_keyboard.dart';
@@ -47,18 +48,18 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Reset password',
+                ConstString.resetPassword,
                 style: MyFont.blackHeading,
               ),
               const Flexible(child: SizedBox(height: 24)),
               const Text(
-                'Enter the email associated with your account and we\'ll send an email with instruction to reset your password',
+                ConstString.sendEmailContent,
                 style: MyFont.greyTitle,
               ),
               const Flexible(child: SizedBox(height: 40)),
               BuildTextFormFeild(
                   controller: _emailController,
-                  title: 'Email address',
+                  title: ConstString.emailAddress,
                   type: TextInputType.emailAddress),
               const Flexible(child: SizedBox(height: 16)),
               StreamBuilder<bool>(
@@ -67,8 +68,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 builder: (context, snapshot) {
                   final isloading = snapshot.data!;
                   return CustomButton(
-                    text: 'Send instructions',
-                    onPress: isloading
+                    text: ConstString.sendInstructions,
+                    onPressed: isloading
                         ? null
                         : () {
                             FocusScopeNode currentFocus =
@@ -92,15 +93,15 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Image.asset(
-            AssetsIcon.arrowBack,
-            height: 24,
-          ),
-          onPressed: () => Navigator.of(context).pop(),
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      leading: IconButton(
+        icon: Image.asset(
+          AssetsIcon.arrowBack,
+          height: 24,
         ),
-      );
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+    );
   }
 }

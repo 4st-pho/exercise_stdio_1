@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/search_bloc.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 
 class SearchTextField extends StatelessWidget {
@@ -33,7 +34,7 @@ class SearchTextField extends StatelessWidget {
             onPressed: () =>
                 _searchBloc.goResultPage(context),
           ),
-          hintText: 'Search anything',
+          hintText: ConstString.searchHintText,
           labelStyle: MyFont.greyTitle,
           border: InputBorder.none,
           enabledBorder: InputBorder.none,

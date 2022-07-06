@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/get_user_bloc.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/assets_image.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/get_rating.dart';
 import 'package:stdio_week_6/models/review.dart';
@@ -43,8 +44,9 @@ class _ReviewHotelItemState extends State<ReviewHotelItem> {
               const Divider(thickness: 1, height: 32),
               Row(children: [
                 ClipOval(
-                  child: Image.network(
-                    user.avatar,
+                  child: FadeInImage.assetNetwork(
+                    placeholder: AssetsImage.fadeImage,
+                    image: user.avatar,
                     width: 40,
                     height: 40,
                     fit: BoxFit.cover,

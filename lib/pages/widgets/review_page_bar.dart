@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_color.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/widgets/image_button.dart';
@@ -53,7 +54,7 @@ class ReviewPageBar extends StatelessWidget {
               )),
               Text(
                 ratedQuantity == 0
-                    ? ' (0 review)'
+                    ? ConstString.noReview
                     : ' ($ratedQuantity reviews)',
                 style: MyFont.blackTitle,
               ),

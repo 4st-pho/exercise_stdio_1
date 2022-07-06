@@ -135,7 +135,7 @@ class HotelFirestore {
       'reviews': FieldValue.arrayUnion([review.toJson()])
     }).then((value) {
       updateHotelRating(hotelId);
-      showSnackBar(context: context, content: 'Add success!');
+      showSnackBar(context: context, content: 'Add successfully!', title: 'Add review');
     }).onError((error, stackTrace) {
       showSnackBar(context: context, content: error.toString());
     });

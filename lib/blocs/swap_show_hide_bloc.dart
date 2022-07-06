@@ -4,9 +4,6 @@ class SwapShowHideBloc {
   bool isVisible = false;
   final _controller = StreamController<bool>();
   Stream<bool> get stream => _controller.stream;
-  void init() {
-    _controller.sink.add(isVisible);
-  }
 
   void toggleShow() {
     isVisible = !isVisible;
@@ -14,7 +11,7 @@ class SwapShowHideBloc {
   }
 
   SwapShowHideBloc() {
-    init();
+    _controller.sink.add(isVisible);
   }
   void dispose() {
     _controller.close();

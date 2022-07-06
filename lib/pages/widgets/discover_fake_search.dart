@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/constants/assets_icon.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 
 class DiscoverFakeSearch extends StatelessWidget {
@@ -8,7 +9,7 @@ class DiscoverFakeSearch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: 'search',
+      tag: ConstString.search,
       child: Material(
           elevation: 10,
           shape:
@@ -24,7 +25,7 @@ class DiscoverFakeSearch extends StatelessWidget {
                 ),
                 const SizedBox(width: 20),
                 const Expanded(
-                  child: Text('Search for hotel, favorite ...',
+                  child: Text(ConstString.searchHintText,
                       style: MyFont.greyTitle, overflow: TextOverflow.ellipsis),
                 ),
                 const SizedBox(width: 20),

@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:stdio_week_6/blocs/loading_bloc.dart';
-import 'package:stdio_week_6/constants/my_color.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 import 'package:stdio_week_6/helper/animation/custom_page_transition.dart';
 import 'package:stdio_week_6/helper/build_password_text_form_field.dart';
@@ -65,8 +65,8 @@ class _LoginPageState extends State<LoginPage> {
                         builder: (context, snapshot) {
                           final isLoading = snapshot.data!;
                           return CustomButton(
-                            text: 'Login',
-                            onPress: isLoading
+                            text: ConstString.login,
+                            onPressed: isLoading
                                 ? null
                                 : () async {
                                     hideKeyboard(context: context);
@@ -101,16 +101,16 @@ class _LoginPageState extends State<LoginPage> {
 
   Column _buildHeaderContent() {
     return Column(
-              children: const [
-                SizedBox(height: 100),
-                Logo(),
-                SizedBox(height: 92),
-                Text('Welcome to comdote!', style: MyFont.blackHeading),
-                SizedBox(height: 4),
-                Text('Alive with your style of living!',
-                    style: MyFont.greySubtitle),
-              ],
-            );
+      children: const [
+        SizedBox(height: 100),
+        Logo(),
+        SizedBox(height: 92),
+        Text(ConstString.welcomeToComdote, style: MyFont.blackHeading),
+        SizedBox(height: 4),
+        Text(ConstString.aliveWithYourStyleOfLiving,
+            style: MyFont.greySubtitle),
+      ],
+    );
   }
 
   InkWell _getForgotPassword(BuildContext context) {
@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                 initEmail: _emailController.text,
               ))),
       child: const Text(
-        'Forgot password?',
+        ConstString.forgotPassword,
         style: MyFont.blueSubtitle,
       ),
     );
@@ -130,12 +130,11 @@ class _LoginPageState extends State<LoginPage> {
     return RichText(
       text: TextSpan(
         style: MyFont.blackText,
-        text: 'You don\'t have an account? ',
+        text: ConstString.youDoNotHaveAnAccount,
         children: [
           TextSpan(
-            text: 'Sign up here.',
-            style: const TextStyle(
-                color: MyColor.blue, decoration: TextDecoration.underline),
+            text: ConstString.signUpHere,
+            style: MyFont.blueSubtitle,
             recognizer: TapGestureRecognizer()
               ..onTap = () {
                 Navigator.of(context)
@@ -154,19 +153,19 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           BuildTextFormFeild(
               controller: _emailController,
-              title: 'Email',
+              title: ConstString.email,
               type: TextInputType.emailAddress,
               showLabel: false),
           const SizedBox(height: 16),
           BuildPasswordTextFormField(
               controller: _passwordController,
-              title: 'Password',
+              title: ConstString.password,
               onValidate: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return ConstString.pleaseEnterSomeText;
                 }
                 if (value.length <= 7) {
-                  return 'Password must be more than 7 characters';
+                  return ConstString.passwordMustBeMoreThan7Characters;
                 }
                 return null;
               }),

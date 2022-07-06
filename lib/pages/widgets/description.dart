@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:stdio_week_6/constants/const_string.dart';
 import 'package:stdio_week_6/constants/my_font.dart';
 
 class Description extends StatefulWidget {
@@ -31,7 +32,7 @@ class _DescriptionState extends State<Description> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text('Description', style: MyFont.blueTitle),
+        const Text(ConstString.description, style: MyFont.blueTitle),
         const SizedBox(
           height: 8,
         ),
@@ -46,7 +47,7 @@ class _DescriptionState extends State<Description> {
                           text: TextSpan(style: MyFont.blackText, children: [
                             TextSpan(text: '$firstHalf... ', children: [
                               TextSpan(
-                                  text: 'read more',
+                                  text: ConstString.readMore,
                                   style: const TextStyle(
                                       decoration: TextDecoration.underline),
                                   recognizer: TapGestureRecognizer()
